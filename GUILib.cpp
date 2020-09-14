@@ -1,13 +1,16 @@
 #pragma once
 
+#include <SFML/Window/Mouse.hpp>
+#include <cstdio>
+#include <cstdlib>
+#include <assert.h>
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Text.hpp>
-#include <cstdio>
-#include <cstdlib>
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Window.hpp>
@@ -34,6 +37,13 @@ public:
 		presented_text.setPosition(x, y);
 		presented_text.setString(text_buf);
 	}
+
+	void render(sf::RenderTarget* target){
+
+		assert(target != nullptr);
+
+		target->draw(presented_text);
+	}
 };
 
 class Button: protected Label {
@@ -46,6 +56,9 @@ protected:
 	sf::Color color_active   = sf::Color();
 	sf::Color border_color   = sf::Color();
 	sf::Color color_inactive = sf::Color();
+
+	bool is_pressed = 0;
+	bool is_hovered = 0;
 	
 public:
 	Button(const char* text, double width, double height, 
@@ -65,7 +78,31 @@ public:
 
 		button_box.setOutlineThickness(2);
 		button_box.setOutlineColor(border_color);
-		    
 
+	}
+
+	void update(const sf::Vector2f& mouse_pos){
+		if (button_box.getGlobalBounds().contains(mouse_pos)){
+			button_box.setFillColor(color_active);
+
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+				printf("Clicked\n");
+			}
+		}
+
+		else {
+			button_box.setFillColor(color_active);
+		}
+	}
+
+	void render(sf::RenderTarget* target){
+
+		assert(target != nullptr);
+
+		target->draw(button_box);
+	}
+
+	sf::RectangleShape display(void){
+		return button_box;
 	}
 };
