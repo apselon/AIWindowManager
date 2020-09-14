@@ -24,25 +24,38 @@ protected:
 	double pos_y = 0;
 
 	size_t char_size = 12;
+
+	const char* font_filename = nullptr;
+	sf::Font font = sf::Font();
+
 	sf::Color color = sf::Color();
 
 public:
 	Label(const char* text, double x = 0, double y = 0, size_t size = 12, 
-				sf::Color color = sf::Color::White) 
+				const char* font_filename = "Misc/SanFrancisco.ttf", 
+				sf::Color color = sf::Color::Black) 
 
-				:text_buf(text), pos_x(x), pos_y(y), char_size(size), color(color) {
+				:text_buf(text), pos_x(x), pos_y(y), char_size(size), 
+				font_filename(font_filename), color(color) {
 
-		presented_text.setCharacterSize(char_size);
-		presented_text.setFillColor(sf::Color::White);
-		presented_text.setPosition(x, y);
 		presented_text.setString(text_buf);
+
+		font.loadFromFile(font_filename);
+
+		presented_text.setFont(font);
+		presented_text.setCharacterSize(char_size);
+
+		presented_text.setFillColor(color);
+		presented_text.setPosition(x, y);
 	}
 
-	void render(sf::RenderTarget* target){
+	void render(sf::RenderTarget& target){
 
-		assert(target != nullptr);
+		target.draw(presented_text);
+	}
 
-		target->draw(presented_text);
+	sf::Text display(void){
+		return presented_text;
 	}
 };
 
@@ -67,10 +80,15 @@ public:
 				sf::Color color_active    = sf::Color::Cyan,
 				sf::Color border_color    = sf::Color::Black)
 
-				:Label(text, x + width/2, y + height/2, font_size), width(width), height(height),
+				:Label(text, x, y, font_size), width(width), height(height),
 				color_active(color_active), border_color(border_color),
 				color_inactive(color_incactive)                                                   {
 
+		auto text_bounds = Label::presented_text.getLocalBounds();
+
+		Label::presented_text.setPosition(x + width/2  - text_bounds.width  / 2,
+		                                  y + height/2 - text_bounds.height / 2);
+					
 		button_box.setSize(sf::Vector2f(width, height));		
 		button_box.setPosition(x, y);
 
@@ -95,11 +113,10 @@ public:
 		}
 	}
 
-	void render(sf::RenderTarget* target){
+	void render(sf::RenderTarget& target){
 
-		assert(target != nullptr);
-
-		target->draw(button_box);
+		target.draw(button_box);
+		Label::render(target);
 	}
 
 	sf::RectangleShape display(void){
