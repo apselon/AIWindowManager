@@ -20,6 +20,7 @@ public:
 
 	Sortable(const Sortable& another): val(another.val) {}
 
+
 	bool operator <(const Sortable& another) {
 
 		++cmp_counter;

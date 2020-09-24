@@ -57,14 +57,16 @@ public:
 template <typename T>
 void test_sort(const Sort<T>& sort, size_t sz) {
 
-	Sortable<T>* array = reinterpret_cast<Sortable<T>*>(::operator new(sizeof(Sortable<T>) * sz));
+	Sortable<T>* array = reinterpret_cast<Sortable<T>*>(::operator new(sizeof(Sortable<T>) * (sz + 10)));
 
 	for (size_t i = 0; i < sz; ++i){
-		array[i] = rand(); 
+		array[i] = Sortable<T>(rand()); 
 	};
 
 	Sortable<T>::reset_cmp_counter();
 	Sortable<T>::reset_cpy_counter();
 
 	sort(array, sz);
+
+	::operator delete(array);
 }

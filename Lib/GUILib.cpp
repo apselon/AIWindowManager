@@ -1,25 +1,13 @@
 #pragma once
 
-#include <cstdio>
-#include <cstdlib>
-#include <assert.h>
-
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
+#include "GUILib.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Drawable.hpp>
-#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/PrimitiveType.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
-#include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Vertex.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Window/Event.hpp>
-#include <SFML/Window/Mouse.hpp>
-#include <SFML/Window/VideoMode.hpp>
-#include <SFML/Window/Window.hpp>
-
-#include "GUILib.hpp"
 
 namespace GUILib {
 
@@ -132,5 +120,113 @@ public:
 		target.draw(button_box);
 		target.draw(main_label);
 	}
+};
+
+class Arrow: public sf::Drawable {
+private:
+	sf::Vertex line[2] = {};
+
+public:
+	Arrow() = default;
+	Arrow(const sf::Vector2f& start, const sf::Vector2f& finish, sf::Color color = sf::Color::Black){
+
+		line[0].position = start;
+		line[0].color = color;
+
+		line[1].position = finish;
+		line[1].color = color;
+	}
+
+	void draw(sf::RenderTarget& target, sf::RenderStates) const override {
+		target.draw(line, 2, sf::Lines);
+	}
+};
+
+class Curve: public sf::Drawable {
+private:
+	sf::VertexArray curve = sf::VertexArray();
+	size_t num_points = 0;
+
+public:
+	Curve(Vector<sf::Vector2f> points, size_t num_points, sf::Color curve_color = sf::Color::Black): num_points(num_points) {
+
+		curve = sf::VertexArray(sf::LineStrip, num_points);			
+
+		for (size_t i = 0; i < num_points; ++i){
+
+			curve[i].position = { points[i].x, points[i].y };
+			curve[i].color = curve_color;
+		}
+	}
+
+	void recolor(sf::Color new_color){
+		for (size_t i = 0; i < num_points; ++i){
+			curve[i].color = new_color;
+		}
+	}
+
+	void reshape(const sf::Vector2f& start, float x_sec_len, float y_sec_len){
+		for (size_t i = 0; i < num_points; ++i){
+
+			curve[i].position = {start.x + curve[i].position.x / x_sec_len, start.y - curve[i].position.y / y_sec_len};
+		}
+	}
+
+	void draw(sf::RenderTarget& target, sf::RenderStates) const override {
+
+		target.draw(curve);
+	}
+
+};
+
+class Plot: public sf::Drawable {
+private:
+	
+	Vector<Curve> curves = Vector<Curve>();
+
+	float x_sec_len = 0;
+	float y_sec_len = 0;
+
+	sf::RectangleShape back = sf::RectangleShape();
+	sf::Color back_color    = sf::Color::White;
+
+	Arrow x_axis = Arrow(); 
+	Arrow y_axis = Arrow(); 
+
+
+public:
+	Plot(float x, float y, float width, float height, 
+				float x_sec_len = 1, float y_sec_len = 1,
+				sf::Color back_color  = sf::Color::White)
+				:x_sec_len(x_sec_len), y_sec_len(y_sec_len),
+				back(sf::RectangleShape()),
+				x_axis(Arrow(sf::Vector2f(x, y), sf::Vector2f(x + width, y         ))),
+				y_axis(Arrow(sf::Vector2f(x, y), sf::Vector2f(x        , y - height))) {
+
+
+
+		back.setSize(sf::Vector2f(width, height));
+		back.setPosition(x, y);
+		back.setFillColor(back_color);
+
+	}
+
+	void add(Curve new_curve){
+
+		new_curve.reshape(back.getPosition(), x_sec_len, y_sec_len);
+		curves.push_back(new_curve);
+	}
+
+	void draw(sf::RenderTarget& target, sf::RenderStates) const override {
+
+		target.draw(back);
+		target.draw(x_axis);
+		target.draw(y_axis);
+
+		for (size_t i = 0; i < curves.size(); ++i){
+			target.draw(curves[i]);
+		}
+	}
+
 };
 }
