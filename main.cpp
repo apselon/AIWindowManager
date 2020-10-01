@@ -34,7 +34,7 @@ int main(void){
 										  sf::Color(155, 89, 182),
 										  sf::Color(155, 89, 182)));
 
-	auto plot = GUILib::Plot(100, 800, 400, 400, 10, 10);
+	auto plot = GUILib::Plot(100, 800, 400, 400, 5, 5);
 
 	auto points = Vector<sf::Vector2f>();
 
