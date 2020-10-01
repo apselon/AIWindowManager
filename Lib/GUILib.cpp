@@ -5,9 +5,12 @@
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/PrimitiveType.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Vertex.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <cmath>
 
 namespace GUILib {
 
@@ -28,6 +31,10 @@ protected:
 	sf::Font font             = sf::Font();
 
 public:
+	
+	Label(const Label& another)            = delete;
+	Label& operator=(const Label& another) = delete;
+
 	Label(const char* text, double x = 0, double y = 0, size_t size = 20, 
 				const char* font_filename = "Misc/SanFranciscoBold.ttf", 
 				sf::Color color = sf::Color::White) 
@@ -122,25 +129,60 @@ public:
 	}
 };
 
+class ThickLine: public sf::Drawable {
+private:
+	sf::VertexArray vertices = sf::VertexArray(sf::Quads, 4);
+	sf::Color color = sf::Color();
+
+public:
+	ThickLine()  = default;
+
+	ThickLine(const sf::Vector2f& start, const sf::Vector2f& finish,
+			  const sf::Color& color = sf::Color::Black, 
+			  const float& thickness = 1)
+			  : color(color)                                         {
+
+		sf::Vector2f dir_vect  = (finish - start);
+		dir_vect = dir_vect / std::sqrt(dir_vect.x * dir_vect.x + dir_vect.y * dir_vect.y);
+
+		sf::Vector2f norm_vect = {-dir_vect.y, dir_vect.x};
+
+		sf::Vector2f thickness_offset = (thickness / 2) * norm_vect;
+
+		vertices[0].position = start  + thickness_offset;
+		vertices[1].position = finish + thickness_offset;
+		vertices[2].position = finish - thickness_offset;
+		vertices[3].position = start  - thickness_offset;
+
+		for (int i = 0; i < 4; ++i){
+			vertices[i].color = color;
+		}
+	}
+
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override {
+		
+		target.draw(vertices);
+	}
+
+};
+
 class Arrow: public sf::Drawable {
 private:
-	sf::Vertex line[2] = {};
+	ThickLine line = ThickLine();
 
 public:
 	Arrow() = default;
-	Arrow(const sf::Vector2f& start, const sf::Vector2f& finish, sf::Color color = sf::Color::Black){
+	Arrow(const sf::Vector2f& start, const sf::Vector2f& finish, 
+	      sf::Color color = sf::Color::Black)
+	      :line(start, finish, color, 3){
 
-		line[0].position = start;
-		line[0].color = color;
-
-		line[1].position = finish;
-		line[1].color = color;
 	}
 
 	void draw(sf::RenderTarget& target, sf::RenderStates) const override {
-		target.draw(line, 2, sf::Lines);
+		target.draw(line);
 	}
 };
+
 
 class Curve: public sf::Drawable {
 private:
@@ -148,7 +190,8 @@ private:
 	size_t num_points = 0;
 
 public:
-	Curve(Vector<sf::Vector2f> points, size_t num_points, sf::Color curve_color = sf::Color::Black): num_points(num_points) {
+	Curve(Vector<sf::Vector2f> points, size_t num_points, sf::Color curve_color = sf::Color::Black)
+				:num_points(num_points) {
 
 		curve = sf::VertexArray(sf::LineStrip, num_points);			
 
@@ -168,7 +211,7 @@ public:
 	void reshape(const sf::Vector2f& start, float x_sec_len, float y_sec_len){
 		for (size_t i = 0; i < num_points; ++i){
 
-			curve[i].position = {start.x + curve[i].position.x / x_sec_len, start.y - curve[i].position.y / y_sec_len};
+			curve[i].position = {start.x + curve[i].position.x * x_sec_len, start.y - curve[i].position.y * y_sec_len};
 		}
 	}
 
@@ -182,6 +225,7 @@ public:
 class Plot: public sf::Drawable {
 private:
 	
+	//TODO List of Curves
 	Vector<Curve> curves = Vector<Curve>();
 
 	float x_sec_len = 0;

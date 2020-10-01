@@ -277,7 +277,7 @@ public:
 		return *this;
 	};
 
-	Iter operator++(){
+	Iter& operator++(){
 		*this = *this + 1;
 		return *this;
 	};
@@ -287,7 +287,7 @@ public:
 		return *this;
 	};
 
-	Iter operator--(){
+	Iter& operator--(){
 		*this = *this - 1;
 		return *this;
 	};
@@ -339,8 +339,8 @@ private:
 
 		BoolReference& operator=(bool new_val){
 
-			if (new_val == true) (*cur_byte) |=   1 << bit_offset;
-			else                 (*cur_byte) &= ~(1 << bit_offset);
+			if (new_val == true) (*cur_byte) |= static_cast<char>(  1 << bit_offset);
+			else                 (*cur_byte) &= static_cast<char>(~(1 << bit_offset));
 
 			return *this;
 		}

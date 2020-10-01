@@ -30,6 +30,12 @@ enum ButtonState {
 };
 	
 class Clickable;
-class Label;
 class Button;
+class Label;
+
+
+class VoidFunctor {
+	void operator ()(...){};
 };
+};
+
