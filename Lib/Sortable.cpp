@@ -28,6 +28,13 @@ public:
 		return val < another.val;
 	}
 
+	bool operator <=(const Sortable& another) {
+
+		++cmp_counter;
+
+		return val < another.val;
+	}
+
 
 	Sortable& operator =(const Sortable& another){
 		if (this != &another){
