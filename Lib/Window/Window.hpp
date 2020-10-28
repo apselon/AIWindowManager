@@ -2,10 +2,7 @@
 #include <ctime>
 #include <cstdint>
 
-#include "vector.hpp"
-#include "Primitives.hpp"
-#include "Event.hpp"
-#include "Auxiliary.hpp"
+#include "../Aux/Auxiliary.hpp"
 
 class AbstractWindow;
 class RenderWindow;
@@ -35,10 +32,14 @@ protected:
 //================================================================================
 
 class RenderWindow: public AbstractWindow {
+/*!
+ * Окно, которое может быть нарисовано внутри другого окна.
+ */
 friend ContainerWindow;
 
 protected:
-    virtual void draw() {};
+    virtual void render_at(RenderWindow& to_render_at);
+    virtual void draw_at(RenderWindow& to_draw_at) = 0;
 };
 
 //================================================================================
@@ -55,7 +56,7 @@ public:
 
     void add_subwindow(RenderWindow* another);
     bool handle_mouse_click(double x,  double y) override;
-    void draw() override;
+    void render_at(RenderWindow& to_render_at) override;
 };
 
 //================================================================================

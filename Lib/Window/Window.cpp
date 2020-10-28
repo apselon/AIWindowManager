@@ -6,7 +6,16 @@ size_t AbstractWindow::id() {
 
 //================================================================================
 
-void ContainerWindow::add_subwindow(RenderWindow* another){
+/*
+ * Для обычного окна вся суть рендеринга --- отрисовка себя.
+ */
+void RenderWindow::render_at(RenderWindow& to_render_at){
+    draw_at(to_render_at);
+}
+
+//================================================================================
+
+void ContainerWindow::add_subwindow(RenderWindow* another) {
     subwindows.push_back(another);
 }
 
@@ -21,11 +30,17 @@ bool ContainerWindow::handle_mouse_click(double x, double y) {
     return false;
 }
 
-void ContainerWindow::draw(){
-    
+/*
+ * Для контейнера рендеринг это отрисовка себя и рендеринг своих детей.
+ */
+
+void ContainerWindow::render_at(RenderWindow& to_render_at) {
+
+    draw_at(to_render_at);
+
     for (auto sub: subwindows){
-        sub->draw();
+        sub->render_at(*this);
     }
-}
+};
 
 //================================================================================
