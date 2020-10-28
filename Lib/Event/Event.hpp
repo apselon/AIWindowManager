@@ -1,12 +1,39 @@
-template <typename T>
-struct Pair {
-    T x = 0;
-    T y = 0;
+#pragma once
+#include "../Aux/Auxiliary.hpp"
 
-    Pair() = default;
-    Pair(const T& x, const T& y): x(x), y(y) {};
+namespace Events {
+enum Type {
+    UNDEFIED = -1,
+    MouseClickType,
+    MouseMoveType,
+    KeyPressType,
+    KeyReleaseType
 };
 
-union Event {
-    Pair<double> mouse_pos = Pair<double>();
+struct MouseClick {
+    double pos_x;
+    double pos_y;
 };
+
+struct MouseMove {
+    double pos_x;
+    double pos_y;
+};
+
+struct KeyPressed {
+    int key_code;
+};
+};
+
+struct Event {
+    Events::Type type = Events::UNDEFIED;
+
+	union {
+	    Events::MouseClick mouse_click;
+	    Events::MouseMove mouse_move; 
+	    Events::KeyPressed key_pressed;
+	};
+
+    Event(Events::Type type): type(type) {};
+};
+
