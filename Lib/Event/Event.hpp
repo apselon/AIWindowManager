@@ -34,6 +34,7 @@ struct Event {
 	    Events::KeyPressed key_pressed;
 	};
 
+    Event(): type(Events::UNDEFIED) {};
     Event(Events::Type type): type(type) {};
 };
 

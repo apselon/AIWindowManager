@@ -4,8 +4,6 @@
 
 #include "../Aux/Auxiliary.hpp"
 
-using Event = int;
-
 class AbstractWindow;
 class RenderWindow;
 class ContainerWindow;

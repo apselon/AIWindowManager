@@ -1,4 +1,5 @@
 #include "SFMLEvents.hpp"
+#include <SFML/Window/Event.hpp>
 
 queue<Event>* SFMLEventSystem::events_queue = nullptr;
 
@@ -10,24 +11,35 @@ void SFMLEventSystem::stop() {
     delete SFMLEventSystem::events_queue;
 }
 
-template <typename... Args_t>
-void SFMLEventSystem::emplace_event(Events::Type type, Args_t... args){
-    auto event = Event(type);
+bool SFMLEventSystem::parse_event(Event& my_event){
+    auto sf_event = sf::Event();
 
-    switch (type) {
-        case Events::MouseMoveType:
-            event.mouse_move = Events::MouseMove{args...};
-            break;
-        case Events::MouseClickType:
-            event.mouse_click = Events::MouseClick{args...};
-        default:
-            break;
+    if (SFMLGraphicSystem::desktop()->pollEvent(sf_event)){
+        switch (sf_event.type){
+            case sf::Event::MouseButtonPressed:
+                my_event.type = Events::MouseClickType;
+
+                my_event.mouse_click = Events::MouseClick {
+                    static_cast<double>(sf_event.mouseButton.x),
+                    static_cast<double>(sf_event.mouseButton.y)
+                };
+
+            default:
+                break;
+        }
     }
 
+    return false;
+}
+
+void SFMLEventSystem::append_event(const Event& event){
     SFMLEventSystem::events_queue->push(event);
 }
 
-bool SFMLEventSystem::poll_event(sf::RenderWindow* desktop){
-    return desktop.pollEvent(event);
-}
+Event SFMLEventSystem::pop_event(){
 
+    auto event = SFMLEventSystem::events_queue->front();
+    SFMLEventSystem::events_queue->pop();
+
+    return event;
+}
