@@ -25,7 +25,8 @@ void AIWM::Application::run(){
 
         if (EventSystem::parse_event(cur_event)){
             switch(cur_event.type){
-                case Events::MouseMoveType:
+                case Events::MouseClickType:
+                    printf("Application got click\n");
                     root_window->handle_mouse_click({cur_event.mouse_click.pos_x, 
                                                      cur_event.mouse_click.pos_y});
                     break;

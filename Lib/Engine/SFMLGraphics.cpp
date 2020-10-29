@@ -25,7 +25,6 @@ sf::Vector2f SFMLGraphicSystem::to_sfVect2f(const Vector2sz& vect){
 }
 
 void SFMLGraphicSystem::draw_rect(const Vector2d& pos, const Vector2sz& size){
-    printf("Drawing rectangle\n");
     auto rect = sf::RectangleShape();
     rect.setSize(to_sfVect2f(size));
     rect.setPosition(to_sfVect2f(pos));
