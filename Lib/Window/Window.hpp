@@ -5,20 +5,21 @@
 #include "../Aux/Auxiliary.hpp"
 
 class AbstractWindow;
-class RenderWindow;
-class ContainerWindow;
+class AbstractRenderWindow;
+class AbstractContainerWindow;
 
 //================================================================================
 
 class AbstractWindow {
-    friend RenderWindow;
-    friend ContainerWindow;
+    friend AbstractRenderWindow;
+    friend AbstractContainerWindow;
 
 private:
     size_t window_id = 0;
 
 protected:
-    virtual bool handle_mouse_click(const Vector2d& click);
+    virtual bool on_mouse_click(const Vector2d& click) = 0;
+    virtual bool on_idle() = 0;
     /*
     virtual bool handle_mouse_move(double x, double y)  = 0;
     virtual bool handle_timer(time_t timer)  = 0;
@@ -27,41 +28,48 @@ protected:
     */
 
 public: 
-    virtual bool on_mouse_click(const Vector2d& click) = 0;
+    virtual bool handle_mouse_click(const Vector2d& click);
+    virtual bool handle_idle();
     size_t id();
 };
 
 //================================================================================
 
-class RenderWindow: public AbstractWindow {
+class AbstractRenderWindow: public AbstractWindow {
 /*!
  * Окно, которое может быть нарисовано внутри другого окна.
  */
-friend ContainerWindow;
-
-protected:
-    virtual void render_at(RenderWindow& to_render_at);
+friend AbstractContainerWindow;
 
 public:
-    virtual void draw_at(RenderWindow& to_draw_at) = 0;
+    bool handle_idle() override;
+    virtual void draw_at() = 0;
+    //virtual void draw_at(RenderWindow& another) = 0; draw in relative position
 };
 
 //================================================================================
 
-class ContainerWindow: public RenderWindow {
+class AbstractContainerWindow: public AbstractWindow {
 //Winndow that sends its events to subwindows.
 private:
-    list<RenderWindow*> subwindows = list<RenderWindow*>();
+    list<AbstractWindow*> subwindows = list<AbstractWindow*>();
 
 public:
-    ContainerWindow() = default;
-    ContainerWindow(const ContainerWindow& another);
-    ContainerWindow(ContainerWindow&& another);
+    AbstractContainerWindow() = default;
+    AbstractContainerWindow(const AbstractContainerWindow& another);
+    AbstractContainerWindow(AbstractContainerWindow&& another);
 
-    void add_subwindow(RenderWindow* another);
-    void render_at(RenderWindow& to_render_at) override;
+    void add_subwindow(AbstractWindow* another);
     bool handle_mouse_click(const Vector2d& click) override;
+    bool handle_idle() override;
 };
 
 //================================================================================
 
+/* Dimond-shaped inheritance.
+class AbstractRenderContainerWindow: AbstractContainerWindow, AbstractRenderWindow {
+     
+};
+*/
+
+//================================================================================

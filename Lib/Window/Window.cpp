@@ -12,25 +12,28 @@ bool AbstractWindow::handle_mouse_click(const Vector2d& click){
     return on_mouse_click(click);
 }
 
-//================================================================================
+bool AbstractWindow::handle_idle(){
 
-/*
- * Для обычного окна рендеринг --- отрисовка себя.
- */
-void RenderWindow::render_at(RenderWindow& to_render_at){
-    draw_at(to_render_at);
+    return on_idle();
 }
 
 //================================================================================
 
-void ContainerWindow::add_subwindow(RenderWindow* another) {
+bool AbstractRenderWindow::handle_idle(){
+    draw_at();
+    return on_idle();
+};
+
+//================================================================================
+
+void AbstractContainerWindow::add_subwindow(AbstractWindow* another) {
     subwindows.push_back(another);
 }
 
 /*
  * Для контейнера обработка нажатия --- диспетчеризация нажатия детям и, если надо, вызов своей реакции на нажатие.
  */
-bool ContainerWindow::handle_mouse_click(const Vector2d& click) {
+bool AbstractContainerWindow::handle_mouse_click(const Vector2d& click) {
 
     for (auto sub: subwindows){
         if(sub->handle_mouse_click(click)){
@@ -41,17 +44,24 @@ bool ContainerWindow::handle_mouse_click(const Vector2d& click) {
     return on_mouse_click(click);
 }
 
-/*
- * Для контейнера рендеринг --- отрисовка себя и рендеринг своих детей.
- */
-
-void ContainerWindow::render_at(RenderWindow& to_render_at) {
-
-    draw_at(to_render_at);
-
+bool AbstractContainerWindow::handle_idle(){
     for (auto sub: subwindows){
-        sub->render_at(*this);
+        sub->handle_idle();
     }
-};
+
+    return on_idle();
+}
 
 //================================================================================
+
+/*
+ * bool AbstractRenderContainerWindow::handle_idle(){
+ *     draw_at();
+ *
+ *     for (auto sub: subwindows){
+ *         sub->handle_idle();
+ *     }
+ *
+ *     return on_idle();
+ * }
+ */

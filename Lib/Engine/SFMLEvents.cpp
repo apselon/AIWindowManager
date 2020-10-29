@@ -18,11 +18,11 @@ bool SFMLEventSystem::parse_event(Event& my_event){
         switch (sf_event.type){
             case sf::Event::MouseButtonPressed:
                 my_event.type = Events::MouseClickType;
-
                 my_event.mouse_click = Events::MouseClick {
                     static_cast<double>(sf_event.mouseButton.x),
                     static_cast<double>(sf_event.mouseButton.y)
                 };
+                return true;
 
             default:
                 break;

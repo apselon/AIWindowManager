@@ -4,6 +4,7 @@
 namespace Events {
 enum Type {
     UNDEFIED = -1,
+    IdleType,
     MouseClickType,
     MouseMoveType,
     KeyPressType,

@@ -19,3 +19,4 @@ public:
 
 };
 
+using GraphicSystem = SFMLGraphicSystem;

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../Event/Event.hpp"
 #include "../Aux/Auxiliary.hpp"
 #include "SFMLGraphics.hpp"
@@ -17,3 +18,4 @@ public:
 
 };
 
+using EventSystem = SFMLEventSystem;
