@@ -32,6 +32,10 @@ bool SFMLEventSystem::parse_event(Event& my_event){
     return false;
 }
 
+bool SFMLEventSystem::poll_event(Event& event) {
+    return SFMLEventSystem::parse_event(event);
+}
+
 void SFMLEventSystem::append_event(const Event& event){
     SFMLEventSystem::events_queue->push(event);
 }

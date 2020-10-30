@@ -14,9 +14,6 @@ class AbstractWindow {
     friend AbstractRenderWindow;
     friend AbstractContainerWindow;
 
-private:
-    size_t window_id = 0;
-
 protected:
     virtual bool on_mouse_click(const Vector2d& click) = 0;
     virtual bool on_idle() = 0;
@@ -30,7 +27,7 @@ protected:
 public: 
     virtual bool handle_mouse_click(const Vector2d& click);
     virtual bool handle_idle();
-    size_t id();
+    virtual ~AbstractWindow();
 };
 
 //================================================================================
@@ -44,7 +41,7 @@ friend AbstractContainerWindow;
 public:
     bool handle_idle() override;
     virtual void draw_at() = 0;
-    //virtual void draw_at(RenderWindow& another) = 0; draw in relative position
+    virtual ~AbstractRenderWindow();
 };
 
 //================================================================================
@@ -62,6 +59,8 @@ public:
     void add_subwindow(AbstractWindow* another);
     bool handle_mouse_click(const Vector2d& click) override;
     bool handle_idle() override;
+
+    virtual  ~AbstractContainerWindow();
 };
 
 //================================================================================

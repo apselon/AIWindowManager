@@ -16,7 +16,7 @@ public:
     static sf::RenderWindow* desktop();
     static void display_desktop();
     static void clear_desktop();
-    static bool desktop_is_running();
+    static bool is_running();
     static void draw_rect(const Vector2d& pos, const Vector2sz& size);
 
 };

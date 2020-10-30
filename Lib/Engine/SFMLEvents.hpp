@@ -13,6 +13,7 @@ public:
     static void start();
     static void stop();
     static bool parse_event(Event& event);
+    static bool poll_event(Event& event);
     static void append_event(const Event& event);
     static Event pop_event();
 

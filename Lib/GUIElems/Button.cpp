@@ -4,15 +4,15 @@
 AbstractRectButton::AbstractRectButton() = default;
 
 bool AbstractRectButton::contains(const Vector2d& point){
-    return (pos.x <= point.x && point.x <= pos.x + size.x) &&
-           (pos.y <= point.y && point.y <= point.y + size.y);
+    return (pos.x <= point.x && point.x <= pos.x + static_cast<double>(size.x)) &&
+           (pos.y <= point.y && point.y <= pos.y + static_cast<double>(size.y));
 }
 
 AbstractRectButton::AbstractRectButton(double x, double y, size_t width, size_t height)
-    :pos(x, y), size(width, height){};
+    :pos(x, y), size(width, height){}
 
 AbstractRectButton::AbstractRectButton(const Vector2d& pos, const Vector2sz& size)
-    :pos(pos), size(size){};
+    :pos(pos), size(size){}
 
 void AbstractRectButton::draw_at() {
     GraphicSystem::draw_rect(pos, size);
@@ -25,16 +25,16 @@ bool AbstractRectButton::on_mouse_click(const Vector2d& click) {
     }
 
     return false;
-};
+}
 
 bool AbstractRectButton::on_idle() {
     return true;
-};
+}
 
 //================================================================================
 
 HelloWorldButton::HelloWorldButton(double x, double y, size_t width, size_t height)
-    :AbstractRectButton(x, y, width, height) {};
+    :AbstractRectButton(x, y, width, height) {}
 
 void HelloWorldButton::on_press() {
     printf("Hello World\n");

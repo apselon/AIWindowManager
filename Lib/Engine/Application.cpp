@@ -18,15 +18,12 @@ void AIWM::Application::stop(){
 }
 
 void AIWM::Application::run(){
-    while (GraphicSystem::desktop()->isOpen()){
+    while (GraphicSystem::is_running()){
         auto cur_event = Event();
 
-        GraphicSystem::desktop()->clear(sf::Color::White);
-
-        if (EventSystem::parse_event(cur_event)){
+        if (EventSystem::poll_event(cur_event)){
             switch(cur_event.type){
                 case Events::MouseClickType:
-                    printf("Application got click\n");
                     root_window->handle_mouse_click({cur_event.mouse_click.pos_x, 
                                                      cur_event.mouse_click.pos_y});
                     break;

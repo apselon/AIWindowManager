@@ -10,21 +10,22 @@ sf::RenderWindow* SFMLGraphicSystem::sf_desktop = nullptr;
 
 void SFMLGraphicSystem::start() {
     sf_desktop = new sf::RenderWindow(sf::VideoMode(1920/2, 1080), "Desktop");
+    display_desktop();
 }
 
 void SFMLGraphicSystem::stop() {
     delete sf_desktop;
 }
 
-sf::Vector2f SFMLGraphicSystem::to_sfVect2f(const Vector2d& vect){
+sf::Vector2f SFMLGraphicSystem::to_sfVect2f(const Vector2d& vect) {
     return sf::Vector2f(vect.x, vect.y);
 }
 
-sf::Vector2f SFMLGraphicSystem::to_sfVect2f(const Vector2sz& vect){
+sf::Vector2f SFMLGraphicSystem::to_sfVect2f(const Vector2sz& vect) {
     return sf::Vector2f(vect.x, vect.y);
 }
 
-void SFMLGraphicSystem::draw_rect(const Vector2d& pos, const Vector2sz& size){
+void SFMLGraphicSystem::draw_rect(const Vector2d& pos, const Vector2sz& size) {
     auto rect = sf::RectangleShape();
     rect.setSize(to_sfVect2f(size));
     rect.setPosition(to_sfVect2f(pos));
@@ -33,10 +34,16 @@ void SFMLGraphicSystem::draw_rect(const Vector2d& pos, const Vector2sz& size){
     sf_desktop->draw(rect);
 }
 
-void SFMLGraphicSystem::display_desktop(){
+void SFMLGraphicSystem::display_desktop() {
     sf_desktop->display();
+    GraphicSystem::desktop()->clear(sf::Color::White);
 }
 
-sf::RenderWindow* SFMLGraphicSystem::desktop(){
+sf::RenderWindow* SFMLGraphicSystem::desktop() {
     return sf_desktop;
+}
+
+bool SFMLGraphicSystem::is_running() {
+
+    return desktop()->isOpen();
 }
