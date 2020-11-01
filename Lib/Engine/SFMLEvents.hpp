@@ -7,7 +7,6 @@
 class SFMLEventSystem {
 private:
     SFMLEventSystem() = default;
-    static queue<Event>* events_queue; 
 
 public:
     static void start();

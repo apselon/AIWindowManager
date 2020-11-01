@@ -17,6 +17,7 @@ class AbstractWindow {
 protected:
     virtual bool on_mouse_click(const Vector2d& click) = 0;
     virtual bool on_mouse_move (const Vector2d& dest)  = 0;
+    virtual bool on_mouse_release    (const Vector2d& pos)   = 0;
     /*
     virtual bool handle_timer(time_t timer)  = 0;
     virtual bool handle_resize(size_t new_w, size_t new_h)  = 0;
@@ -24,8 +25,9 @@ protected:
     */
 
 public: 
-    virtual bool handle_mouse_click(const Vector2d& click);
-    virtual bool handle_mouse_move (const Vector2d& dest); 
+    virtual bool handle_mouse_release(const Vector2d& click);
+    virtual bool handle_mouse_click  (const Vector2d& click);
+    virtual bool handle_mouse_move   (const Vector2d& dest); 
     virtual bool handle_redraw();
     virtual ~AbstractWindow();
 };
@@ -57,8 +59,9 @@ public:
     AbstractContainerWindow(AbstractContainerWindow&& another);
 
     virtual void add_subwindow(AbstractWindow* another);
-    bool handle_mouse_click(const Vector2d& click) override;
-    bool handle_mouse_move (const Vector2d& dest)  override; 
+    bool handle_mouse_release(const Vector2d& m_pos) override;
+    bool handle_mouse_click  (const Vector2d& click) override;
+    bool handle_mouse_move   (const Vector2d& dest)  override; 
     bool handle_redraw() override;
 
     virtual  ~AbstractContainerWindow();

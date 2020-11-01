@@ -24,14 +24,21 @@ void AIWM::Application::run(){
 
         if (EventSystem::poll_event(cur_event)){
             switch(cur_event.type){
-                case Events::MouseClickType:
+                case Events::Type::MouseClick:
                     root_window->handle_mouse_click({
                         cur_event.mouse_click.pos_x, 
                         cur_event.mouse_click.pos_y
                     });
                     break;
+
+                case Events::Type::MouseRelease:
+                    root_window->handle_mouse_release({
+                        cur_event.mouse_click.pos_x, 
+                        cur_event.mouse_click.pos_y
+                    });
+                    break;
                 
-                case Events::MouseMoveType:
+                case Events::Type::MouseMove:
                     root_window->handle_mouse_move({
                             cur_event.mouse_move.pos_x,
                             cur_event.mouse_move.pos_y

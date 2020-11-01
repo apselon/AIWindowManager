@@ -36,10 +36,23 @@ bool AbstractRectButton::on_mouse_move(const Vector2d& dest) {
     return false;
 }
 
+bool AbstractRectButton::on_mouse_release(const Vector2d& m_pos) {
+    if (contains(m_pos)){
+        on_release();
+        return true;
+    }
+
+    return false;
+}
+
 //================================================================================
 
 HelloWorldButton::HelloWorldButton(double x, double y, size_t width, size_t height)
     :AbstractRectButton(x, y, width, height) {}
+
+void HelloWorldButton::on_release() {
+    printf("kek %d\n", rand());
+}
 
 void HelloWorldButton::on_press() {
     printf("Hello World %d\n", rand());

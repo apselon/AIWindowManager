@@ -16,11 +16,13 @@ public:
     AbstractRectButton(const Vector2d& pos, const Vector2sz& size);
 
     void draw_at() override;
-    bool on_mouse_click(const Vector2d& click) override;
-    bool on_mouse_move (const Vector2d& move)  override;
+    bool on_mouse_release(const Vector2d& click) override;
+    bool on_mouse_click  (const Vector2d& click) override;
+    bool on_mouse_move   (const Vector2d& move)  override;
 
-    virtual void on_press() = 0;
-    virtual void on_hover() = 0;
+    virtual void on_release() = 0;
+    virtual void on_press  () = 0;
+    virtual void on_hover  () = 0;
 };
 
 //================================================================================
@@ -28,6 +30,7 @@ public:
 class HelloWorldButton: public AbstractRectButton {
 public:
     HelloWorldButton(double x, double y, size_t width, size_t height);
-    void on_press() override;
-    void on_hover() override;
+    void on_release() override;
+    void on_press  () override;
+    void on_hover  () override;
 };

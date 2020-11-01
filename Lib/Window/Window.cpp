@@ -1,7 +1,6 @@
 #include "Window.hpp"
 
 bool AbstractWindow::handle_mouse_click(const Vector2d& click){
-
     return on_mouse_click(click);
 }
 
@@ -11,6 +10,10 @@ bool AbstractWindow::handle_redraw(){
 
 bool AbstractWindow::handle_mouse_move(const Vector2d& dest){
     return on_mouse_move(dest); 
+}
+
+bool AbstractWindow::handle_mouse_release(const Vector2d& m_pos){
+    return on_mouse_release(m_pos);
 }
 
 AbstractWindow::~AbstractWindow(){
@@ -62,6 +65,14 @@ bool AbstractContainerWindow::handle_redraw(){
     }
 
     return true;
+}
+
+bool AbstractContainerWindow::handle_mouse_release(const Vector2d& m_pos){
+    for (auto sub: subwindows){
+        sub->handle_mouse_release(m_pos);
+    }
+
+    return on_mouse_release(m_pos);
 }
 
 AbstractContainerWindow::~AbstractContainerWindow() {
