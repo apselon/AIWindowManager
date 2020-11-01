@@ -14,7 +14,7 @@ void SFMLEventSystem::stop() {
 bool SFMLEventSystem::parse_event(Event& my_event){
     auto sf_event = sf::Event();
 
-    if (SFMLGraphicSystem::desktop()->pollEvent(sf_event)){
+    while (SFMLGraphicSystem::desktop()->pollEvent(sf_event)){
         switch (sf_event.type){
             case sf::Event::MouseButtonPressed:
                 my_event.type = Events::MouseClickType;
@@ -22,14 +22,22 @@ bool SFMLEventSystem::parse_event(Event& my_event){
                     static_cast<double>(sf_event.mouseButton.x),
                     static_cast<double>(sf_event.mouseButton.y)
                 };
-                return true;
+                break;
+            
+            case sf::Event::MouseMoved:
+                my_event.type = Events::MouseMoveType;
+                my_event.mouse_move = Events::MouseMove {
+                    static_cast<double>(sf_event.mouseMove.x),
+                    static_cast<double>(sf_event.mouseMove.y),
+                };
+                break;
 
             default:
-                break;
+                return false;
         }
     }
 
-    return false;
+    return true;
 }
 
 bool SFMLEventSystem::poll_event(Event& event) {

@@ -27,8 +27,13 @@ bool AbstractRectButton::on_mouse_click(const Vector2d& click) {
     return false;
 }
 
-bool AbstractRectButton::on_idle() {
-    return true;
+bool AbstractRectButton::on_mouse_move(const Vector2d& dest) {
+    if (contains(dest)){
+        on_hover();
+        return true;
+    }
+
+    return false;
 }
 
 //================================================================================
@@ -37,5 +42,9 @@ HelloWorldButton::HelloWorldButton(double x, double y, size_t width, size_t heig
     :AbstractRectButton(x, y, width, height) {}
 
 void HelloWorldButton::on_press() {
-    printf("Hello World\n");
+    printf("Hello World %d\n", rand());
+}
+
+void HelloWorldButton::on_hover() {
+    printf("Привет, Мир %d\n", rand());
 }

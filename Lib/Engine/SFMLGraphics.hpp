@@ -17,7 +17,9 @@ public:
     static void display_desktop();
     static void clear_desktop();
     static bool is_running();
+
     static void draw_rect(const Vector2d& pos, const Vector2sz& size);
+    static void draw_text(const char* text, const Vector2d& pos, size_t size);
 
 };
 

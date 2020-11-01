@@ -3,8 +3,8 @@ CXXFLAGS = -Wall -Weffc++ -Wfloat-equal -Wconversion -Wpedantic -Wextra -ftrapv 
 LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system
 OBJFILES_DIR = .objects
 
-app.run: main.cpp $(OBJFILES_DIR)/Application.o $(OBJFILES_DIR)/SFMLEvents.o $(OBJFILES_DIR)/SFMLGraphics.o $(OBJFILES_DIR)/Window.o $(OBJFILES_DIR)/Button.o
-	$(CXX) $(CXXFLAGS) main.cpp $(OBJFILES_DIR)/Application.o $(OBJFILES_DIR)/SFMLEvents.o $(OBJFILES_DIR)/SFMLGraphics.o $(OBJFILES_DIR)/Window.o $(OBJFILES_DIR)/Button.o $(LDLIBS) -o app.run
+app.run: main.cpp $(OBJFILES_DIR)/Application.o $(OBJFILES_DIR)/SFMLEvents.o $(OBJFILES_DIR)/SFMLGraphics.o $(OBJFILES_DIR)/Window.o $(OBJFILES_DIR)/Button.o $(OBJFILES_DIR)/Label.o
+	$(CXX) $(CXXFLAGS) main.cpp $(OBJFILES_DIR)/Application.o $(OBJFILES_DIR)/SFMLEvents.o $(OBJFILES_DIR)/SFMLGraphics.o $(OBJFILES_DIR)/Window.o $(OBJFILES_DIR)/Button.o $(LDLIBS) $(OBJFILES_DIR)/Label.o -o app.run
 
 $(OBJFILES_DIR)/Application.o: Lib/Engine/Application.cpp Lib/Engine/Application.hpp
 	$(CXX) $(CXXFLAGS) -c Lib/Engine/Application.cpp -o $(OBJFILES_DIR)/Application.o
@@ -20,3 +20,6 @@ $(OBJFILES_DIR)/Window.o: Lib/Window/Window.cpp Lib/Window/Window.hpp
 
 $(OBJFILES_DIR)/Button.o: Lib/GUIElems/Button.cpp Lib/GUIElems/Button.hpp
 	$(CXX) $(CXXFLAGS) -c Lib/GUIElems/Button.cpp -o $(OBJFILES_DIR)/Button.o
+
+$(OBJFILES_DIR)/Label.o: Lib/GUIElems/Label.cpp Lib/GUIElems/Label.hpp
+	$(CXX) $(CXXFLAGS) -c Lib/GUIElems/Label.cpp -o $(OBJFILES_DIR)/Label.o

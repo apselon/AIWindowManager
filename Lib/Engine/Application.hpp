@@ -15,6 +15,9 @@ public:
     static void start();
     static void stop();
     static void run();
+
+    template <typename T>
+    AbstractWindow* make_window();
 };
 
 } //AIWM

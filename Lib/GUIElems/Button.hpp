@@ -17,9 +17,10 @@ public:
 
     void draw_at() override;
     bool on_mouse_click(const Vector2d& click) override;
-    bool on_idle() override;
+    bool on_mouse_move (const Vector2d& move)  override;
 
     virtual void on_press() = 0;
+    virtual void on_hover() = 0;
 };
 
 //================================================================================
@@ -28,4 +29,5 @@ class HelloWorldButton: public AbstractRectButton {
 public:
     HelloWorldButton(double x, double y, size_t width, size_t height);
     void on_press() override;
+    void on_hover() override;
 };
