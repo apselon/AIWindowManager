@@ -50,7 +50,7 @@ public:
 
 class AbstractContainerWindow: public AbstractWindow {
 //Winndow that sends its events to subwindows.
-private:
+protected:
     list<AbstractWindow*> subwindows = list<AbstractWindow*>();
 
 public:
