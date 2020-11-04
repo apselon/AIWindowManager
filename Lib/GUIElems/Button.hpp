@@ -15,7 +15,7 @@ public:
     AbstractRectButton(double x, double y, size_t width, size_t height);
     AbstractRectButton(const Vector2d& pos, const Vector2sz& size);
 
-    void draw_at() override;
+    void on_redraw() override;
     bool on_mouse_release(const Vector2d& click) override;
     bool on_mouse_click  (const Vector2d& click) override;
     bool on_mouse_move   (const Vector2d& move)  override;

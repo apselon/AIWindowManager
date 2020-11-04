@@ -7,7 +7,8 @@ class AbstractScrollPadding;
 
 class AbstractScrollPadding: public AbstractRenderWindow {
 private:
-    AbstractScrollBar* parent_bar = nullptr;
+    AbstractScrollBar*    parent_bar = nullptr;
+    AbstractScrollSlider* slider     = nullptr;
 
 protected:
     AbstractScrollPadding(AbstractScrollBar* parent_bar);
@@ -21,54 +22,78 @@ public:
 class AbstractScrollSlider: public AbstractRenderWindow {
     friend AbstractScrollPadding;
 
+protected:
+    bool on_mouse_click(const Vector2d&) override;
+    bool on_mouse_release(const Vector2d&) override;
+    bool on_mouse_move(const Vector2d& click) override;
+
 public:
-    virtual bool clicked_higher(const Vector2d& click) = 0;
-    virtual bool clicked_lower (const Vector2d& click) = 0;
-    AbstractScrollSlider();
+    virtual bool positioned_before(const Vector2d& click) = 0;
+    virtual bool positioned_after (const Vector2d& click) = 0;
 };
 
 //================================================================================
 
-class AbstractScrollBar: public AbstractContainerWindow {
+class AbstractScrollBar: public AbstractRenderWindow {
     friend AbstractScrollPadding;
     friend AbstractScrollSlider;
     friend AbstractScrollContainer;
 
 private:
-    AbstractScrollContainer* container = nullptr;
-    AbstractScrollSlider* slider       = nullptr;
-    AbstractScrollPadding* padding     = nullptr;
+    AbstractScrollSlider*  slider  = nullptr;
+    AbstractScrollPadding* padding = nullptr;
 
 protected:
-    AbstractScrollBar(AbstractScrollContainer* container, 
-                      AbstractScrollSlider* slider, 
-                      AbstractScrollPadding* padding);
-
     AbstractScrollSlider* get_slider();
-    AbstractScrollPadding* get_padding();
+    virtual bool handle_scroll(long scrol_quant);
+
+    AbstractScrollBar(AbstractScrollSlider* slider, AbstractScrollPadding* padding);
 
 public:
-    bool handle_scroll(long scrol_quant);
+    virtual bool on_scroll() = 0;
 };
 
 //================================================================================
 
-class AbstractScrollContainer: public AbstractContainerWindow {
-private:
-    AbstractScrollBar* scroll_bar = nullptr;
+class BasicSlider: public AbstractScrollSlider, public IRect {
+
+protected:
+    void on_redraw() override;
+    bool contains(const Vector2d& dot) override;
+
+    BasicSlider(const Vector2d& pos, const Vector2sz& size);
 
 public:
-    AbstractScrollContainer(AbstractScrollBar* scroll_bar);
-    AbstractScrollBar* get_scroll_bar();
-
-    virtual bool on_scroll(long scroll_quant) = 0;
+    bool positioned_before(const Vector2d& click) override;
+    bool positioned_after (const Vector2d& click) override;
 };
 
-class BasicRectSlider: public AbstractScrollSlider {
-private:
-    Vector2d pos  = Vector2d();
-    Vector2d size = Vector2d();
+//================================================================================
+
+class BasicPadding: public AbstractScrollPadding, public IRect {
+
+protected:
+    void on_redraw() override; 
+    bool on_mouse_move(const Vector2d& click) override;
+    bool contains(const Vector2d& dot) override;
+
+    BasicPadding(const Vector2d& pos, const Vector2sz& size, AbstractScrollBar* bar);
+};
+
+class BasicScrollBar: public AbstractScrollBar, public IRect {
+
+protected:
+    void on_redraw() override;
+    bool on_mouse_move(const Vector2d& click) override;
+    bool on_mouse_click(const Vector2d& click) override;
+    bool on_mouse_release(const Vector2d& click) override;
+    bool contains(const Vector2d& dot) override;
+
+    BasicScrollBar(const Vector2d& pos, const Vector2sz& size, 
+                   AbstractScrollSlider* slider, 
+                   AbstractScrollPadding* padding);
+
 public:
-    bool clicked_lower (const Vector2d& click) override; 
-    bool clicked_higher(const Vector2d& click) override; 
+    BasicScrollBar(const Vector2d& pos, const Vector2sz& size);
+    
 };

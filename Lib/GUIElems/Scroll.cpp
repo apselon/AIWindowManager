@@ -1,17 +1,19 @@
 #include "Scroll.hpp"
+#include "../Engine/SFMLGraphics.hpp"
 
 AbstractScrollPadding::AbstractScrollPadding(AbstractScrollBar* parent_bar)
-    :parent_bar(parent_bar){}
+    :parent_bar(parent_bar), slider(parent_bar->get_slider()) {}
 
 bool AbstractScrollPadding::on_mouse_click(const Vector2d& click) {
-    auto slider = parent_bar->get_slider();
 
-    if (slider->clicked_lower(click)) {
+    if (!contains(click)) return false;
+
+    if (slider->positioned_after(click)) {
         parent_bar->handle_scroll(-1);    
         return true;
     }
 
-    else if (slider->clicked_higher(click)) {
+    if (slider->positioned_before(click)) {
         parent_bar->handle_scroll(1);
         return true;
     }
@@ -21,32 +23,56 @@ bool AbstractScrollPadding::on_mouse_click(const Vector2d& click) {
 
 //================================================================================
 
-
-//================================================================================
-
-AbstractScrollBar::AbstractScrollBar(AbstractScrollContainer* container)
-    :container(container) {};
-
-bool AbstractScrollBar::handle_scroll(long scrol_quant){
-    return container->on_scroll(scrol_quant);
+AbstractScrollBar::AbstractScrollBar(AbstractScrollSlider* slider, 
+                                     AbstractScrollPadding* padding)
+    :slider(slider), padding(padding)
+{
+    add_subwindow(slider);
+    add_subwindow(padding);
 }
 
 AbstractScrollSlider* AbstractScrollBar::get_slider() {
-    return slider;
+    return slider;    
 }
 
-AbstractScrollPadding* AbstractScrollBar::get_padding() {
-    return padding;
+bool AbstractScrollBar::handle_scroll(long) {
+    //slider->move();
+    return on_scroll();
 }
 
 //================================================================================
 
-AbstractScrollContainer::AbstractScrollContainer(AbstractScrollBar* scroll_bar)
-    :scroll_bar(scroll_bar)
-{
-    add_subwindow(scroll_bar);
+BasicSlider::BasicSlider(const Vector2d& pos, const Vector2sz& size)
+    :IRect(pos, size) {}
+
+bool BasicSlider::positioned_before(const Vector2d& click) {
+    return (click.y <= pos.y);
 }
 
-AbstractScrollBar* AbstractScrollContainer::get_scroll_bar() {
-    return scroll_bar;
+bool BasicSlider::positioned_after(const Vector2d& click) {
+    return (click.y >= pos.y + size.y);
 }
+
+void BasicSlider::on_redraw() {
+    GraphicSystem::draw_rect(pos, size);
+}
+
+//================================================================================
+
+BasicPadding::BasicPadding(const Vector2d& pos, const Vector2sz& size, AbstractScrollBar* bar)
+    :AbstractScrollPadding(bar), IRect(pos, size) {}
+
+void BasicPadding::on_redraw() {
+    GraphicSystem::draw_rect(pos, size);
+}
+
+//================================================================================
+
+BasicScrollBar::BasicScrollBar(const Vector2d& pos, const Vector2sz& size,
+                               AbstractScrollSlider* slider, 
+                               AbstractScrollPadding* padding)
+    :AbstractScrollBar(slider, padding), IRect(pos, size) {}
+
+BasicScrollBar::BasicScrollBar(const Vector2d& pos, const Vector2sz& size)
+    :BasicScrollBar(pos, size, new BasicSlider(), new BasicPadding()) {}
+
