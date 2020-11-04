@@ -61,3 +61,8 @@ bool AbstractRenderWindow::handle_redraw() {
 
 //================================================================================
 
+IRect::IRect(const Vector2d& pos, const Vector2sz& size)
+    :pos(pos), size(size) {}
+
+IRect::IRect(double x, double y, size_t width, size_t height)
+    :pos(x, y), size(width, height) {}

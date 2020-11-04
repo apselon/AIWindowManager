@@ -14,10 +14,9 @@ class AbstractWindow {
     friend AbstractRenderWindow;
     friend AbstractContainerWindow;
 
-private:
+protected:
     list<AbstractWindow*> subwindows = list<AbstractWindow*>();
 
-protected:
     virtual bool on_mouse_click  (const Vector2d& click) = 0;
     virtual bool on_mouse_move   (const Vector2d& dest)  = 0;
     virtual bool on_mouse_release(const Vector2d& pos)   = 0;
@@ -48,7 +47,19 @@ protected:
 
 public:
     bool handle_redraw() override;
+    virtual bool contains(const Vector2d& dot) = 0;
     //virtual ~AbstractRenderWindow();
 };
 
 //================================================================================
+
+class IRect {
+
+protected:
+    Vector2d pos = Vector2d();
+    Vector2sz size = Vector2sz();
+
+public:
+    IRect(const Vector2d& pos, const Vector2sz& size);
+    IRect(double x, double y, size_t width, size_t height);
+};
