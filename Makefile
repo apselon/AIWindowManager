@@ -3,9 +3,11 @@ CXXFLAGS = -Wall -Weffc++ -Wfloat-equal -Wconversion -Wpedantic -Wextra -ftrapv 
 LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system
 OBJDIR = .objects
 
-app.run: main.cpp $(OBJDIR)/Application.o $(OBJDIR)/SFMLEvents.o $(OBJDIR)/SFMLGraphics.o $(OBJDIR)/Window.o $(OBJDIR)/Button.o $(OBJDIR)/Label.o
-	#$(CXX) $(CXXFLAGS) main.cpp $(OBJDIR)/Application.o $(OBJDIR)/SFMLEvents.o $(OBJDIR)/SFMLGraphics.o $(OBJDIR)/Window.o $(OBJDIR)/Button.o $(LDLIBS) $(OBJDIR)/Label.o -o app.run
+app.run: main.cpp $(OBJDIR)/Application.o $(OBJDIR)/SFMLEvents.o $(OBJDIR)/SFMLGraphics.o $(OBJDIR)/Window.o $(OBJDIR)/Button.o $(OBJDIR)/Label.o $(OBJDIR)/Scroll.o
 	$(CXX) $(CXXFLAGS) $^ $(LDLIBS) -o app.run
+
+$(OBJDIR)/Scroll.o: Lib/GUIElems/Scroll.cpp Lib/GUIElems/Scroll.hpp
+	$(CXX) $(CXXFLAGS) -c Lib/GUIElems/Scroll.cpp -o $(OBJDIR)/Scroll.o
 
 $(OBJDIR)/Application.o: Lib/Engine/Application.cpp Lib/Engine/Application.hpp
 	$(CXX) $(CXXFLAGS) -c Lib/Engine/Application.cpp -o $(OBJDIR)/Application.o

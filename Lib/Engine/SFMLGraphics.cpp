@@ -22,10 +22,6 @@ sf::Vector2f SFMLGraphicSystem::to_sfVect2f(const Vector2d& vect) {
     return sf::Vector2f(vect.x, vect.y);
 }
 
-sf::Vector2f SFMLGraphicSystem::to_sfVect2f(const Vector2sz& vect) {
-    return sf::Vector2f(vect.x, vect.y);
-}
-
 void SFMLGraphicSystem::display_desktop() {
     sf_desktop->display();
     GraphicSystem::desktop()->clear(sf::Color::White);
@@ -40,7 +36,7 @@ bool SFMLGraphicSystem::is_running() {
     return desktop()->isOpen();
 }
 
-void SFMLGraphicSystem::draw_rect(const Vector2d& pos, const Vector2sz& size) {
+void SFMLGraphicSystem::draw_rect(const Vector2d& pos, const Vector2d& size) {
     auto sf_rect = sf::RectangleShape();
     sf_rect.setSize(to_sfVect2f(size));
     sf_rect.setPosition(to_sfVect2f(pos));

@@ -1,12 +1,11 @@
 #include "Application.hpp"
-#include "../GUIElems/Label.hpp"
-#include "../GUIElems/Button.hpp"
+#include "../Window/Window.hpp"
 #include <SFML/Graphics/Color.hpp>
 
 AbstractWindow* AIWM::Application::root_window = nullptr;
 
 void AIWM::Application::start(){
-    Application::root_window = new HelloWorldButton(100, 100, 100, 200);
+    Application::root_window = new DraggableRectWindow({100, 100}, {100, 200}, {0, 1});
     GraphicSystem::start();
     EventSystem::start();
 

@@ -3,18 +3,13 @@
 
 AbstractRectButton::AbstractRectButton() = default;
 
-bool AbstractRectButton::contains(const Vector2d& point){
-    return (pos.x <= point.x && point.x <= pos.x + static_cast<double>(size.x)) &&
-           (pos.y <= point.y && point.y <= pos.y + static_cast<double>(size.y));
-}
-
 AbstractRectButton::AbstractRectButton(double x, double y, size_t width, size_t height)
     :pos(x, y), size(width, height){}
 
-AbstractRectButton::AbstractRectButton(const Vector2d& pos, const Vector2sz& size)
+AbstractRectButton::AbstractRectButton(const Vector2d& pos, const Vector2d& size)
     :pos(pos), size(size){}
 
-void AbstractRectButton::draw_at() {
+void AbstractRectButton::on_redraw() {
     GraphicSystem::draw_rect(pos, size);
 }
 

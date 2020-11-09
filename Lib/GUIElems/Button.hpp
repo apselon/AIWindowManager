@@ -7,13 +7,12 @@
 class AbstractRectButton: public AbstractRenderWindow {
 private:
     Vector2d pos   = Vector2d();    
-    Vector2sz size = Vector2sz();
-    bool contains(const Vector2d& point);
+    Vector2d size = Vector2d();
 
 public:
     AbstractRectButton();
     AbstractRectButton(double x, double y, size_t width, size_t height);
-    AbstractRectButton(const Vector2d& pos, const Vector2sz& size);
+    AbstractRectButton(const Vector2d& pos, const Vector2d& size);
 
     void on_redraw() override;
     bool on_mouse_release(const Vector2d& click) override;

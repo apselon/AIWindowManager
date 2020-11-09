@@ -6,7 +6,7 @@ TextLabel::TextLabel(const char* text, double x, double y, size_t size)
 TextLabel::TextLabel(const char* text, const Vector2d& pos, size_t size)
     :buffer(text), pos(pos), text_size(size) {};
 
-void TextLabel::draw_at() {
+void TextLabel::on_redraw() {
     GraphicSystem::draw_text(buffer, pos, text_size);
 }
 
