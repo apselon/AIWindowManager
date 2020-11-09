@@ -1,4 +1,5 @@
 #include "Window.hpp"
+#include "../../Lib/Engine/SFMLGraphics.hpp"
 
 bool AbstractWindow::handle_redraw() {
     for (auto sub: subwindows) {
@@ -30,7 +31,11 @@ bool AbstractWindow::handle_mouse_move(const Vector2d& dest) {
 
 bool AbstractWindow::handle_mouse_release(const Vector2d& m_pos) {
     for (auto sub: subwindows) {
-        sub->handle_mouse_release(m_pos);
+        if(sub->handle_mouse_release(m_pos)) {
+            return true;
+        }
+
+        return on_mouse_release(m_pos);
     }
 
     return on_mouse_release(m_pos);
@@ -61,8 +66,47 @@ bool AbstractRenderWindow::handle_redraw() {
 
 //================================================================================
 
-IRect::IRect(const Vector2d& pos, const Vector2sz& size)
-    :pos(pos), size(size) {}
+AbstractRectWindow::AbstractRectWindow(const Vector2d& pos, const Vector2d& size)
+    :pos(pos), size(size){}
 
-IRect::IRect(double x, double y, size_t width, size_t height)
-    :pos(x, y), size(width, height) {}
+void AbstractRectWindow::on_redraw() {
+    //GraphicSystem::draw_texture(texture, pos, size);
+    GraphicSystem::draw_rect(pos, size);
+}
+
+bool AbstractRectWindow::contains(const Vector2d& point) {
+    return (pos.x <= point.x && point.x <= pos.x + size.x) &&
+           (pos.y <= point.y && point.y <= pos.y + size.y);
+}
+
+//================================================================================
+
+DraggableRectWindow::DraggableRectWindow(const Vector2d& pos, const Vector2d& size, 
+                                         const Vector2d& dir) 
+    :AbstractRectWindow(pos, size), direction_vect(dir) {}
+
+bool DraggableRectWindow::on_mouse_click(const Vector2d& click) {
+    if (!contains(click)) return false;
+
+    pressed_flag = true;
+    old_pos = pos;
+    drag_rel_pos = {click.x - pos.x, click.y - pos.y};
+
+    return true;
+}
+
+bool DraggableRectWindow::on_mouse_release(const Vector2d& click) {
+    if (!contains(click)) return false;
+
+    pressed_flag = false;
+
+    return true;
+}
+
+bool DraggableRectWindow::on_mouse_move(const Vector2d& click) {
+    if (!contains(click) || !pressed_flag) return false;
+
+    pos = pos + (direction_vect * ((click - pos - drag_rel_pos) ^ direction_vect));
+
+    return true;
+}

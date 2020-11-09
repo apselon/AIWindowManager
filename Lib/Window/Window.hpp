@@ -1,7 +1,4 @@
 #pragma once
-#include <ctime>
-#include <cstdint>
-
 #include "../Aux/Auxiliary.hpp"
 
 class AbstractWindow;
@@ -20,15 +17,10 @@ protected:
     virtual bool on_mouse_click  (const Vector2d& click) = 0;
     virtual bool on_mouse_move   (const Vector2d& dest)  = 0;
     virtual bool on_mouse_release(const Vector2d& pos)   = 0;
-    /*
-    virtual bool handle_timer(time_t timer)  = 0;
-    virtual bool handle_resize(size_t new_w, size_t new_h)  = 0;
-    virtual bool handle_key_pressed();
-    */
 
 public: 
-    virtual bool handle_mouse_click  (const Vector2d& click);
     virtual bool handle_mouse_move   (const Vector2d& dest); 
+    virtual bool handle_mouse_click  (const Vector2d& click);
     virtual bool handle_mouse_release(const Vector2d& click);
     virtual bool handle_redraw();
 
@@ -47,19 +39,41 @@ protected:
 
 public:
     bool handle_redraw() override;
-    virtual bool contains(const Vector2d& dot) = 0;
+    virtual bool contains(const Vector2d& point) = 0;
     //virtual ~AbstractRenderWindow();
 };
 
 //================================================================================
 
-class IRect {
+class AbstractRectWindow: public AbstractRenderWindow {
 
 protected:
-    Vector2d pos = Vector2d();
-    Vector2sz size = Vector2sz();
+    Vector2d pos   = Vector2d();
+    Vector2d size = Vector2d();
+
+    void on_redraw() override;
+    bool contains(const Vector2d& point) override;
 
 public:
-    IRect(const Vector2d& pos, const Vector2sz& size);
-    IRect(double x, double y, size_t width, size_t height);
+    AbstractRectWindow(const Vector2d& pos, const Vector2d& size);
 };
+
+//================================================================================
+
+class DraggableRectWindow: public AbstractRectWindow {
+
+private:
+    bool pressed_flag = false;
+    const Vector2d direction_vect = {};
+    Vector2d old_pos = {}; 
+    Vector2d drag_rel_pos = {};
+
+protected:
+    bool on_mouse_click(const Vector2d& click) override;
+    bool on_mouse_move(const Vector2d& move) override;
+    bool on_mouse_release(const Vector2d& pos) override;
+
+public:
+    DraggableRectWindow(const Vector2d& pos, const Vector2d& size, const Vector2d& dir = {});
+};
+
