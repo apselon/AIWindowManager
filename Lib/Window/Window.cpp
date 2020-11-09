@@ -81,9 +81,8 @@ bool AbstractRectWindow::contains(const Vector2d& point) {
 
 //================================================================================
 
-DraggableRectWindow::DraggableRectWindow(const Vector2d& pos, const Vector2d& size, 
-                                         const Vector2d& dir) 
-    :AbstractRectWindow(pos, size), direction_vect(dir) {}
+DraggableRectWindow::DraggableRectWindow(const Vector2d& pos, const Vector2d& size) 
+    :AbstractRectWindow(pos, size) {}
 
 bool DraggableRectWindow::on_mouse_click(const Vector2d& click) {
     if (!contains(click)) return false;
@@ -106,7 +105,12 @@ bool DraggableRectWindow::on_mouse_release(const Vector2d& click) {
 bool DraggableRectWindow::on_mouse_move(const Vector2d& click) {
     if (!contains(click) || !pressed_flag) return false;
 
-    pos = pos + (direction_vect * ((click - pos - drag_rel_pos) ^ direction_vect));
+    drag_to(click);
 
     return true;
+}
+
+void DraggableRectWindow::drag_to(const Vector2d& click) {
+    //pos = pos + (direction_vect * ((click - pos - drag_rel_pos) ^ direction_vect));
+    pos = click - drag_rel_pos;
 }

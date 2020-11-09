@@ -62,18 +62,17 @@ public:
 
 class DraggableRectWindow: public AbstractRectWindow {
 
-private:
+protected:
     bool pressed_flag = false;
-    const Vector2d direction_vect = {};
     Vector2d old_pos = {}; 
     Vector2d drag_rel_pos = {};
 
-protected:
     bool on_mouse_click(const Vector2d& click) override;
     bool on_mouse_move(const Vector2d& move) override;
     bool on_mouse_release(const Vector2d& pos) override;
 
 public:
-    DraggableRectWindow(const Vector2d& pos, const Vector2d& size, const Vector2d& dir = {});
+    DraggableRectWindow(const Vector2d& pos, const Vector2d& size);
+    virtual void drag_to(const Vector2d& click);
 };
 
