@@ -88,13 +88,12 @@ bool DraggableRectWindow::on_mouse_click(const Vector2d& click) {
     if (!contains(click)) return false;
 
     pressed_flag = true;
-    old_pos = pos;
     drag_rel_pos = {click.x - pos.x, click.y - pos.y};
 
     return true;
 }
 
-bool DraggableRectWindow::on_mouse_release(const Vector2d& click) {
+bool DraggableRectWindow::on_mouse_release(const Vector2d&) {
 
     if (pressed_flag == true) {
         pressed_flag = false;
@@ -106,7 +105,7 @@ bool DraggableRectWindow::on_mouse_release(const Vector2d& click) {
 
 bool DraggableRectWindow::on_mouse_move(const Vector2d& click) {
     if (!pressed_flag) return false;
-
+    old_pos = pos;
     drag_to(click);
 
     return true;

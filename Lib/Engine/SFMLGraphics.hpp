@@ -20,6 +20,8 @@ public:
 
     static void draw_rect(const Vector2d& pos, const Vector2d& size);
     static void draw_text(const char* text, const Vector2d& pos, size_t size);
+    static void draw_scrollable_text(const std::string& text, const Vector2d& pos, 
+                                     const Vector2d& size, double offset);
 
 };
 

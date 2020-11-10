@@ -1,10 +1,14 @@
 #include "SFMLGraphics.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/System/String.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/VideoMode.hpp>
+#include <string>
 
 
 sf::RenderWindow* SFMLGraphicSystem::sf_desktop = nullptr;
@@ -57,4 +61,32 @@ void SFMLGraphicSystem::draw_text(const char* text, const Vector2d& pos, size_t 
     sf_text.setPosition(to_sfVect2f(pos));
 
     sf_desktop->draw(sf_text);
+}
+
+void SFMLGraphicSystem::draw_scrollable_text(
+        const std::string& text, const Vector2d& pos, 
+        const Vector2d& size, double offset)
+{
+    auto sf_text = sf::Text();
+    auto sf_font = sf::Font();
+
+    sf_font.loadFromFile("Misc/Artemius.ttf");
+    sf_text.setString(sf::String::fromUtf8(text.begin(), text.end()));
+    sf_text.setFont(sf_font);
+    sf_text.setCharacterSize(12);
+    sf_text.setFillColor(sf::Color::Black);
+
+    sf_text.setPosition(0, offset); 
+
+    auto sf_texture = sf::RenderTexture();
+    sf_texture.create(size.x, size.y);
+    sf_texture.clear(sf::Color::White);
+    sf_texture.draw(sf_text);
+    sf_texture.display();
+
+    auto sf_sprite = sf::Sprite();
+    sf_sprite.setTexture(sf_texture.getTexture());
+    sf_sprite.setPosition(to_sfVect2f(pos));
+    sf_desktop->draw(sf_sprite);
+
 }
