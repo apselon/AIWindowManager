@@ -1,51 +1,25 @@
 #include "Window.hpp"
 #include "../../Lib/Engine/SFMLGraphics.hpp"
 
-bool AbstractWindow::handle_redraw() {
-    for (auto sub: subwindows) {
-        sub->handle_redraw();
-    }
 
-    return true;
-}
-
-bool AbstractWindow::handle_mouse_click(const Vector2d& click) {
+bool AbstractWindow::dispatch_event(const Event& event)
+{
     for (auto sub: subwindows) {
-        if(sub->handle_mouse_click(click)) {
+        if (sub->dispatch_event(event)) {
             return true;
         }
     }
 
-    return on_mouse_click(click);
+    return false;
 }
 
-bool AbstractWindow::handle_mouse_move(const Vector2d& dest) {
-    for (auto sub: subwindows) {
-        if(sub->handle_mouse_move(dest)) {
-            return true;
-        }
-    }
-
-    return on_mouse_move(dest);
-}
-
-bool AbstractWindow::handle_mouse_release(const Vector2d& m_pos) {
-    for (auto sub: subwindows) {
-        if(sub->handle_mouse_release(m_pos)) {
-            return true;
-        }
-
-        return on_mouse_release(m_pos);
-    }
-
-    return on_mouse_release(m_pos);
-}
-
-void AbstractWindow::add_subwindow(AbstractWindow* another) {
+void AbstractWindow::add_subwindow(AbstractWindow* another)
+{
     subwindows.push_back(another);
 }
 
-AbstractWindow::~AbstractWindow() {
+AbstractWindow::~AbstractWindow()
+{
     for (auto sub: subwindows) {
         sub->~AbstractWindow();
         delete sub;
@@ -55,62 +29,10 @@ AbstractWindow::~AbstractWindow() {
 
 //================================================================================
 
-bool AbstractRenderWindow::handle_redraw() {
-    for (auto sub: subwindows) {
-        sub->handle_redraw();
-    }
-
-    on_redraw();
-    return true;
+template <class Shape>
+void ShapedWindow<Shape>::draw()
+{
+    shape.draw();
 }
-
 //================================================================================
 
-AbstractRectWindow::AbstractRectWindow(const Vector2d& pos, const Vector2d& size)
-    :pos(pos), size(size){}
-
-void AbstractRectWindow::on_redraw() {
-    //GraphicSystem::draw_texture(texture, pos, size);
-    GraphicSystem::draw_rect(pos, size);
-}
-
-bool AbstractRectWindow::contains(const Vector2d& point) {
-    return (pos.x <= point.x && point.x <= pos.x + size.x) &&
-           (pos.y <= point.y && point.y <= pos.y + size.y);
-}
-
-//================================================================================
-
-DraggableRectWindow::DraggableRectWindow(const Vector2d& pos, const Vector2d& size) 
-    :AbstractRectWindow(pos, size) {}
-
-bool DraggableRectWindow::on_mouse_click(const Vector2d& click) {
-    if (!contains(click)) return false;
-
-    pressed_flag = true;
-    drag_rel_pos = {click.x - pos.x, click.y - pos.y};
-
-    return true;
-}
-
-bool DraggableRectWindow::on_mouse_release(const Vector2d&) {
-
-    if (pressed_flag == true) {
-        pressed_flag = false;
-        return true;
-    }
-
-    return false;
-}
-
-bool DraggableRectWindow::on_mouse_move(const Vector2d& click) {
-    if (!pressed_flag) return false;
-    old_pos = pos;
-    drag_to(click);
-
-    return true;
-}
-
-void DraggableRectWindow::drag_to(const Vector2d& click) {
-    pos = click - drag_rel_pos;
-}
