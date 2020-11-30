@@ -1,48 +1,46 @@
 #pragma once
 #include "../Aux/Auxiliary.hpp"
 
-namespace Events {
-enum class Type {
-    UNDEFIED = -1,
-    IdleType,
+enum class EventType {
+    UNDEF = -1,
+    Idle,
     MouseClick,
     MouseRelease,
     MouseMove,
     KeyPress,
-    KeyRelease
+    KeyRelease,
+    Redraw
 };
 
-struct MouseClick {
-    double pos_x;
-    double pos_y;
+class Event {
+private:
+    EventType type = EventType::UNDEF;
+
+public:
+    Event() = default;
+    Event(EventType type);
+    EventType get_type();
 };
 
-struct MouseMove {
-    double pos_x;
-    double pos_y;
+class MouseEvent: public Event {
+private:
+    Vector2d pos = Vector2d();
+
+public:
+    MouseEvent() = default;
+    MouseEvent(const Vector2d& pos, EventType type);
 };
 
-struct MouseRelease {
-    double pos_x;
-    double pos_y;
+class KeyEvent: public Event {
+private:
+    int key = 0;
+
+public:
+    KeyEvent() = default;
+    KeyEvent(int key, EventType type);
 };
 
-struct KeyPressed {
-    int key_code;
+class RedrawEvent: Event {
+public:
+    RedrawEvent();
 };
-};
-
-struct Event {
-    Events::Type type = Events::Type::UNDEFIED;
-
-	union {
-	    Events::MouseClick mouse_click;
-	    Events::MouseMove mouse_move; 
-	    Events::KeyPressed key_pressed;
-        Events::MouseRelease mouse_release;
-	};
-
-    Event(): type(Events::Type::UNDEFIED) {};
-    Event(Events::Type type): type(type) {};
-};
-
