@@ -63,7 +63,7 @@ void AIWM::Application::start(){
 void AIWM::Application::stop(){
     delete Application::root_window;
     GraphicSystem::stop();
-    EventSystem::start();
+    EventSystem::stop();
 }
 
 void AIWM::Application::run(){

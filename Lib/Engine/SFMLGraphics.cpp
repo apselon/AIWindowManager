@@ -70,7 +70,7 @@ void SFMLGraphicSystem::draw_scrollable_text(
     auto sf_text = sf::Text();
     auto sf_font = sf::Font();
 
-    sf_font.loadFromFile("Misc/Artemius.ttf");
+    sf_font.loadFromFile("Misc/SanFrancisco.ttf");
     sf_text.setString(sf::String::fromUtf8(text.begin(), text.end()));
     sf_text.setFont(sf_font);
     sf_text.setCharacterSize(12);
