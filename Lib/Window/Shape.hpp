@@ -20,4 +20,6 @@ public:
     RectShape(const Vector2d& pos, const Vector2d& size);
     bool draw() override;
     bool contains(const Vector2d& point) override;
+    Vector2d get_pos() const;
+    void set_pos(const Vector2d& new_pos);
 };

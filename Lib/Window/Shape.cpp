@@ -15,3 +15,13 @@ bool RectShape::contains(const Vector2d& point)
     return (pos.x <= point.x && point.x <= pos.x + size.x) &&
            (pos.y <= point.y && point.y <= pos.y + size.y);
 }
+
+Vector2d RectShape::get_pos() const
+{
+    return pos;
+}
+
+void RectShape::set_pos(const Vector2d& new_pos)
+{
+    pos = new_pos;
+}
