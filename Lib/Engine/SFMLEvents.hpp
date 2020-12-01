@@ -11,8 +11,8 @@ private:
 public:
     static void start();
     static void stop();
-    static Event parse_event();
-    static Event poll_event();
+    static const Event* parse_event();
+    static const Event* poll_event();
     static void append_event(const Event& event);
     static Event pop_event();
 

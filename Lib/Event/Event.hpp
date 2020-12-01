@@ -19,7 +19,8 @@ private:
 public:
     Event() = default;
     Event(EventType type);
-    EventType get_type();
+    EventType get_type() const;
+    virtual ~Event() = default;
 };
 
 class MouseEvent: public Event {
@@ -29,6 +30,7 @@ private:
 public:
     MouseEvent() = default;
     MouseEvent(const Vector2d& pos, EventType type);
+    Vector2d get_pos() const;
 };
 
 class KeyEvent: public Event {

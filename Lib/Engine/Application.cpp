@@ -1,11 +1,13 @@
 #include "Application.hpp"
 #include "../Window/Window.hpp"
-#include "../GUIElems/Scroll.hpp"
+//#include "../GUIElems/Scroll.hpp"
+#include "../GUIElems/Button.hpp"
 #include <SFML/Graphics/Color.hpp>
 
 AbstractWindow* AIWM::Application::root_window = nullptr;
 
 void AIWM::Application::start(){
+    Application::root_window = new HelloWorldButton({100, 100}, {100, 100});
     /*
     Application::root_window = new Slider({100, 100}, {100, 100}, {100, 300});
     Application::root_window = new TextView({100, 300}, {200, 300}, R"(Давай ронять слова,
@@ -72,7 +74,7 @@ void AIWM::Application::run(){
     while (GraphicSystem::is_running()){
 
         root_window->handle_event(EventSystem::poll_event());
-        root_window->handle_event(RedrawEvent());
+        //root_window->handle_event(RedrawEvent());
         GraphicSystem::display_desktop();
     }
 }

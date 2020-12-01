@@ -3,7 +3,8 @@
 Event::Event(EventType type)
     :type(type) {}
 
-EventType Event::get_type() {
+EventType Event::get_type() const
+{
     return type;
 }
 
@@ -11,6 +12,11 @@ EventType Event::get_type() {
     
 MouseEvent::MouseEvent(const Vector2d& pos, EventType type)
     :Event(type), pos(pos) {}
+
+Vector2d MouseEvent::get_pos() const 
+{
+    return pos;
+}
 
 //================================================================================
 

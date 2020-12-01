@@ -7,7 +7,7 @@ void SFMLEventSystem::start() {
 void SFMLEventSystem::stop() {
 }
 
-Event SFMLEventSystem::parse_event(){
+const Event* SFMLEventSystem::parse_event(){
     auto sf_event = sf::Event();
     
     Vector2d pos = {};
@@ -18,32 +18,32 @@ Event SFMLEventSystem::parse_event(){
                 pos = Vector2d(sf_event.mouseButton.x, 
                                sf_event.mouseButton.y);
 
-                return MouseEvent(pos, EventType::MouseClick);
+                return new MouseEvent(pos, EventType::MouseClick);
                 break;
 
             case sf::Event::MouseButtonReleased:
                 pos = Vector2d(sf_event.mouseButton.x, 
                                sf_event.mouseButton.y);
 
-                return MouseEvent(pos, EventType::MouseRelease);
+                return new MouseEvent(pos, EventType::MouseRelease);
                 break;
             
             case sf::Event::MouseMoved:
                 pos = Vector2d(sf_event.mouseButton.x, 
                                sf_event.mouseButton.y);
 
-                return MouseEvent(pos, EventType::MouseMove);
+                return new MouseEvent(pos, EventType::MouseMove);
                 break;
 
             default:
-                return Event();
+                return nullptr;
         }
     }
 
-    return Event();
+    return nullptr; 
 }
 
-Event SFMLEventSystem::poll_event() {
+const Event* SFMLEventSystem::poll_event() {
     return SFMLEventSystem::parse_event();
 }
 
