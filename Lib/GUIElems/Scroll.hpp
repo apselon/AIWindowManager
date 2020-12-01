@@ -1,12 +1,14 @@
 #include "../Window/Window.hpp"
 
-class InterfaceScrollable {
+class Scrollable {
 
 public:
     virtual bool handle_scroll(double quant) = 0;
+    virtual ~Scrollable() = default;
 };
 
 
+/*
 enum class Orientation {
     VERTICAL,
     HORIZONTAL,
@@ -14,7 +16,7 @@ enum class Orientation {
     OR_LENGTH
 };
 
-class Slider: public DraggableRectWindow {
+class Slider: public RectWindow,  public Draggable{
 protected:
     Vector2d dir = {};
     Vector2d limits = {};
@@ -50,3 +52,4 @@ protected:
 public:
     TextView(const Vector2d& pos, const Vector2d& size, const char* text = nullptr);
 };
+*/

@@ -1,6 +1,7 @@
 #include "Scroll.hpp"
 #include "../Engine/SFMLGraphics.hpp"
 
+/*
 //================================================================================
 
 Slider::Slider(const Vector2d& pos, const Vector2d& size, const Vector2d& limits,
@@ -58,4 +59,4 @@ bool TextView::handle_scroll(double quant) {
     printf("[%lg]\n", offset);
     return true;
 }
-
+*/

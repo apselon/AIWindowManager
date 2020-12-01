@@ -2,7 +2,6 @@
 
 bool Draggable::on_mouse_click(const Vector2d& pos)
 {
-    //Большая проблема, тут нужен contains
     is_pressed = true;
     return true;
 }

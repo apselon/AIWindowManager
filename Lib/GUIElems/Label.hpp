@@ -1,5 +1,6 @@
 #pragma once
 
+/*
 #include "../Window/Window.hpp"
 #include "../Aux/Auxiliary.hpp"
 #include "../Engine/SFMLGraphics.hpp"
@@ -18,3 +19,4 @@ public:
     void on_redraw() override;
     bool on_mouse_click(const Vector2d&) override;
 };
+*/

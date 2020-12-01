@@ -1,5 +1,6 @@
 #include "Label.hpp"
 
+/*
 TextLabel::TextLabel(const char* text, double x, double y, size_t size)
     :buffer(text), pos(x, y), text_size(size) {};
 
@@ -14,3 +15,4 @@ bool TextLabel::on_mouse_click(const Vector2d&) {
     return false;
 }
 
+*/
