@@ -40,7 +40,6 @@ bool AbstractRectButton::handle_event(const Event* event) {
 
         case EventType::Redraw:
             draw();
-            delete event;
             break;
 
         default:

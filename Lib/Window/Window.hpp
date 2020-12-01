@@ -16,7 +16,7 @@ class AbstractWindow {
     friend AbstractContainerWindow;
 
 protected:
-    virtual bool dispatch_event(const Event& event);
+    virtual bool dispatch_event(const Event* event);
     list<AbstractWindow*> subwindows = list<AbstractWindow*>();
 
 
@@ -25,6 +25,14 @@ public:
     virtual bool handle_event(const Event* event) = 0;
     virtual void add_subwindow(AbstractWindow* another);
     virtual ~AbstractWindow();
+};
+
+//================================================================================
+
+class DesktopWindow: public AbstractWindow {
+public:
+    DesktopWindow() = default;
+    bool handle_event(const Event* event) override;
 };
 
 //================================================================================

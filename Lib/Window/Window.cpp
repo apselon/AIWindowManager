@@ -2,10 +2,10 @@
 #include "../../Lib/Engine/SFMLGraphics.hpp"
 
 
-bool AbstractWindow::dispatch_event(const Event& event)
+bool AbstractWindow::dispatch_event(const Event* event)
 {
     for (auto sub: subwindows) {
-        if (sub->dispatch_event(event)) {
+        if (sub->handle_event(event)) {
             return true;
         }
     }
@@ -29,6 +29,17 @@ AbstractWindow::~AbstractWindow()
 
 //================================================================================
 
+bool DesktopWindow::handle_event(const Event* event)
+{
+    if (dispatch_event(event)) {
+        return true;
+    }
+
+    return false;
+}
+
+//================================================================================
+
 template <class Shape>
 ShapedWindow<Shape>::ShapedWindow(const Shape& shape)
     :shape(shape) {}
@@ -41,4 +52,5 @@ void ShapedWindow<Shape>::draw()
 
 template class ShapedWindow<RectShape>;
 //================================================================================
+
 
