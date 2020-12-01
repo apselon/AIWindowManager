@@ -1,14 +1,14 @@
 #include "Application.hpp"
 #include "../Window/Window.hpp"
-//#include "../GUIElems/Scroll.hpp"
-#include "../GUIElems/Button.hpp"
-#include <SFML/Graphics/Color.hpp>
+#include "../GUIElems/Scroll.hpp"
 
 AbstractWindow* AIWM::Application::root_window = nullptr;
 
 void AIWM::Application::start(){
-    Application::root_window = new HelloWorldButton({100, 100}, {100, 100});
+    Application::root_window = new Slider({100 + 100, 100}, {10, 10}, {100, 100 + 100}, nullptr);
+
     /*
+        new HelloWorldButton({100, 100}, {100, 100});
     Application::root_window = new Slider({100, 100}, {100, 100}, {100, 300});
     Application::root_window = new TextView({100, 300}, {200, 300}, R"(Давай ронять слова,
 Как сад — янтарь и цедру,
