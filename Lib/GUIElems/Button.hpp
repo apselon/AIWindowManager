@@ -4,32 +4,21 @@
 #include "../Aux/Auxiliary.hpp"
 #include "../Engine/SFMLGraphics.hpp"
 
-class AbstractRectButton: public AbstractRenderWindow {
-private:
-    Vector2d pos   = Vector2d();    
-    Vector2d size = Vector2d();
-
+class AbstractRectButton: public RectWindow, public MouseReceptive {
 public:
     AbstractRectButton();
-    AbstractRectButton(double x, double y, size_t width, size_t height);
     AbstractRectButton(const Vector2d& pos, const Vector2d& size);
-
-    void on_redraw() override;
-    bool on_mouse_release(const Vector2d& click) override;
-    bool on_mouse_click  (const Vector2d& click) override;
-    bool on_mouse_move   (const Vector2d& move)  override;
-
-    virtual void on_release() = 0;
-    virtual void on_press  () = 0;
-    virtual void on_hover  () = 0;
+    bool handle_event(const Event* event) override;
 };
 
 //================================================================================
 
 class HelloWorldButton: public AbstractRectButton {
+protected:
+    bool on_mouse_click(const Vector2d& override)   override;
+    bool on_mouse_move(const Vector2d& override)    override;
+    bool on_mouse_release(const Vector2d& override) override;
+
 public:
-    HelloWorldButton(double x, double y, size_t width, size_t height);
-    void on_release() override;
-    void on_press  () override;
-    void on_hover  () override;
+    HelloWorldButton(const Vector2d&, const Vector2d&);
 };
