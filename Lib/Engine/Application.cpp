@@ -2,10 +2,10 @@
 #include "../Window/Window.hpp"
 #include "../GUIElems/Scroll.hpp"
 
-AbstractWindow* AIWM::Application::root_window = nullptr;
+auto AIWM::Application::root_windows = list<AbstractWindow*>();
 
 void AIWM::Application::start(){
-    Application::root_window = new Slider({100 + 100, 100}, {10, 10}, {100, 100 + 100}, nullptr);
+    //Application::root_window = new Slider({100 + 100, 100}, {10, 10}, {100, 100 + 100}, nullptr);
 
     /*
         new HelloWorldButton({100, 100}, {100, 100});
@@ -64,17 +64,29 @@ void AIWM::Application::start(){
 
 }
 
-void AIWM::Application::stop(){
-    delete Application::root_window;
+void AIWM::Application::open_window(AbstractWindow* new_window)
+{
+    root_windows.push_back(new_window);
+}
+
+void AIWM::Application::stop()
+{
+    for (auto win: root_windows) {
+        delete win;
+    }
+
     GraphicSystem::stop();
     EventSystem::stop();
 }
 
-void AIWM::Application::run(){
+void AIWM::Application::run()
+{
     while (GraphicSystem::is_running()){
+        for (auto win: root_windows) {
+            win->handle_event(EventSystem::poll_event());
+            win->handle_event(new RedrawEvent());
+        }
 
-        root_window->handle_event(EventSystem::poll_event());
-        root_window->handle_event(new RedrawEvent());
         GraphicSystem::display_desktop();
     }
 }

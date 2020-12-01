@@ -9,15 +9,14 @@ namespace AIWM {
 class Application {
 private:
     Application() = default;
-    static AbstractWindow* root_window;
+    static list<AbstractWindow*> root_windows;
 
 public:
     static void start();
     static void stop();
     static void run();
 
-    template <typename T>
-    AbstractWindow* make_window();
+    static void open_window(AbstractWindow* new_window);
 };
 
 } //AIWM
