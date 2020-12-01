@@ -40,7 +40,7 @@ public:
     KeyEvent(int key, EventType type);
 };
 
-class RedrawEvent: Event {
+class RedrawEvent: public Event {
 public:
     RedrawEvent();
 };

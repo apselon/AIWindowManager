@@ -6,7 +6,8 @@
 AbstractWindow* AIWM::Application::root_window = nullptr;
 
 void AIWM::Application::start(){
-    //Application::root_window = new Slider({100, 100}, {100, 100}, {100, 300});
+    /*
+    Application::root_window = new Slider({100, 100}, {100, 100}, {100, 300});
     Application::root_window = new TextView({100, 300}, {200, 300}, R"(Давай ронять слова,
 Как сад — янтарь и цедру,
 Рассеянно и щедро,
@@ -54,6 +55,7 @@ void AIWM::Application::start(){
 Загадка зги загробной,
 Но жизнь, как тишина
 Осенняя, — подробна.)"); 
+*/
 
     GraphicSystem::start();
     EventSystem::start();
@@ -68,37 +70,9 @@ void AIWM::Application::stop(){
 
 void AIWM::Application::run(){
     while (GraphicSystem::is_running()){
-        auto cur_event = Event();
 
-        if (EventSystem::poll_event(cur_event)){
-            switch(cur_event.type){
-                case Events::Type::MouseClick:
-                    root_window->handle_mouse_click({
-                        cur_event.mouse_click.pos_x, 
-                        cur_event.mouse_click.pos_y
-                    });
-                    break;
-
-                case Events::Type::MouseRelease:
-                    root_window->handle_mouse_release({
-                        cur_event.mouse_click.pos_x, 
-                        cur_event.mouse_click.pos_y
-                    });
-                    break;
-                
-                case Events::Type::MouseMove:
-                    root_window->handle_mouse_move({
-                            cur_event.mouse_move.pos_x,
-                            cur_event.mouse_move.pos_y
-                    });
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        root_window->handle_redraw();
+        root_window->handle_event(EventSystem::poll_event());
+        root_window->handle_event(RedrawEvent());
         GraphicSystem::display_desktop();
     }
 }

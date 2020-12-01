@@ -7,45 +7,44 @@ void SFMLEventSystem::start() {
 void SFMLEventSystem::stop() {
 }
 
-bool SFMLEventSystem::parse_event(Event& my_event){
+Event SFMLEventSystem::parse_event(){
     auto sf_event = sf::Event();
-
+    
+    Vector2d pos = {};
     while (SFMLGraphicSystem::desktop()->pollEvent(sf_event)){
         switch (sf_event.type){
             case sf::Event::MouseButtonPressed:
-                my_event.type = Events::Type::MouseClick;
-                my_event.mouse_click = Events::MouseClick {
-                    static_cast<double>(sf_event.mouseButton.x),
-                    static_cast<double>(sf_event.mouseButton.y)
-                };
+                
+                pos = Vector2d(sf_event.mouseButton.x, 
+                               sf_event.mouseButton.y);
+
+                return MouseEvent(pos, EventType::MouseClick);
                 break;
 
             case sf::Event::MouseButtonReleased:
-                my_event.type = Events::Type::MouseRelease;
-                my_event.mouse_release = Events::MouseRelease {
-                    static_cast<double>(sf_event.mouseButton.x),
-                    static_cast<double>(sf_event.mouseButton.y)
-                };
+                pos = Vector2d(sf_event.mouseButton.x, 
+                               sf_event.mouseButton.y);
+
+                return MouseEvent(pos, EventType::MouseRelease);
                 break;
             
             case sf::Event::MouseMoved:
-                my_event.type = Events::Type::MouseMove;
-                my_event.mouse_move = Events::MouseMove {
-                    static_cast<double>(sf_event.mouseMove.x),
-                    static_cast<double>(sf_event.mouseMove.y),
-                };
+                pos = Vector2d(sf_event.mouseButton.x, 
+                               sf_event.mouseButton.y);
+
+                return MouseEvent(pos, EventType::MouseMove);
                 break;
 
             default:
-                return false;
+                return Event();
         }
     }
 
-    return true;
+    return Event();
 }
 
-bool SFMLEventSystem::poll_event(Event& event) {
-    return SFMLEventSystem::parse_event(event);
+Event SFMLEventSystem::poll_event() {
+    return SFMLEventSystem::parse_event();
 }
 
 void SFMLEventSystem::append_event(const Event& event){
