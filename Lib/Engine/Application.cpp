@@ -74,7 +74,7 @@ void AIWM::Application::run(){
     while (GraphicSystem::is_running()){
 
         root_window->handle_event(EventSystem::poll_event());
-        //root_window->handle_event(RedrawEvent());
+        root_window->handle_event(new RedrawEvent());
         GraphicSystem::display_desktop();
     }
 }

@@ -29,8 +29,8 @@ const Event* SFMLEventSystem::parse_event(){
                 break;
             
             case sf::Event::MouseMoved:
-                pos = Vector2d(sf_event.mouseButton.x, 
-                               sf_event.mouseButton.y);
+                pos = Vector2d(sf_event.mouseMove.x, 
+                               sf_event.mouseMove.y);
 
                 return new MouseEvent(pos, EventType::MouseMove);
                 break;
