@@ -1,20 +1,64 @@
 #include "Scroll.hpp"
-#include "../Engine/SFMLGraphics.hpp"
-
-/*
-//================================================================================
 
 Slider::Slider(const Vector2d& pos, const Vector2d& size, const Vector2d& limits,
-               InterfaceScrollable* parent,
+               Scrollable* parent,
                const Orientation orientation)
-    :DraggableRectWindow(pos, size), limits(limits), 
+    :RectWindow({pos, size}), limits(limits), 
     orientation(orientation), parent(parent)
 {
     dir = {0, 1};
 }
 
+bool Slider::handle_event(const Event* event) {
+    if (event == nullptr) return false;
+
+    Vector2d pos = {};
+
+    switch (event->get_type()) {
+        case EventType::MouseMove:
+            pos = dynamic_cast<const MouseEvent*>(event)->get_pos();
+            if (shape.contains(pos) || is_pressed) {
+                on_mouse_move(pos);
+                delete event;
+                return true;
+            }
+            break;
+
+        case EventType::MouseClick:
+            pos = dynamic_cast<const MouseEvent*>(event)->get_pos();
+            if (shape.contains(pos)) {
+                on_mouse_click(pos);
+                delete event;
+                return true;
+            }
+            break;
+
+        case EventType::MouseRelease:
+            pos = dynamic_cast<const MouseEvent*>(event)->get_pos();
+            if (shape.contains(pos) || is_pressed) {
+                on_mouse_release(pos);
+                delete event;
+                return true;
+            }
+
+            break;
+
+        case EventType::Redraw:
+            draw();
+            delete event;
+            break;
+
+        default:
+            return false;
+    }
+
+    return false;
+}
+
 void Slider::drag_to(const Vector2d& click) {
-    auto new_pos = pos + (dir * ((click - pos - drag_rel_pos) ^ dir));
+    auto pos = shape.get_pos();
+
+    auto new_pos = pos + (dir * ((click - pos /*- drag_rel_pos*/) ^ dir));
 
     switch (orientation){
         case Orientation::VERTICAL:
@@ -26,7 +70,8 @@ void Slider::drag_to(const Vector2d& click) {
             break;
     }
 
-    pos = new_pos;
+    shape.set_pos(new_pos);
+
     if (parent != nullptr) {
         parent->handle_scroll(-(new_pos.y - limits.x) / 100);
     }
@@ -34,6 +79,7 @@ void Slider::drag_to(const Vector2d& click) {
 
 //================================================================================
 
+/*
 TextView::TextView(const Vector2d& pos, const Vector2d& size, const char* text)
     :pos(pos), size(size), text(text)
 {

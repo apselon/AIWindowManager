@@ -1,14 +1,13 @@
+#pragma once
 #include "../Window/Window.hpp"
 
 class Scrollable {
-
 public:
     virtual bool handle_scroll(double quant) = 0;
     virtual ~Scrollable() = default;
 };
 
 
-/*
 enum class Orientation {
     VERTICAL,
     HORIZONTAL,
@@ -16,21 +15,23 @@ enum class Orientation {
     OR_LENGTH
 };
 
-class Slider: public RectWindow,  public Draggable{
+class Slider: public RectWindow,  public Draggable {
 protected:
     Vector2d dir = {};
     Vector2d limits = {};
     Orientation orientation = Orientation::VERTICAL;
-    InterfaceScrollable* parent = nullptr;
+    Scrollable* parent = nullptr;
 
 public:
     Slider(const Vector2d& pos, const Vector2d& size, const Vector2d& limits,
-           InterfaceScrollable* parent = nullptr,
+           Scrollable* parent = nullptr,
            const Orientation orientation = Orientation::VERTICAL);
 
     void drag_to(const Vector2d& click) override;
+    bool handle_event(const Event* slider) override;
 };
 
+/*
 class TextView: public AbstractRenderWindow, public InterfaceScrollable {
 private:
     Vector2d pos = {};
