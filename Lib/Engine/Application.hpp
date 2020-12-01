@@ -9,7 +9,7 @@ namespace AIWM {
 class Application {
 private:
     Application() = default;
-    static list<AbstractWindow*> root_windows;
+    static AbstractWindow* root_window;
 
 public:
     static void start();

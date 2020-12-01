@@ -2,12 +2,14 @@
 #include "../Window/Window.hpp"
 #include "../GUIElems/Scroll.hpp"
 
-auto AIWM::Application::root_windows = list<AbstractWindow*>();
+AbstractWindow* AIWM::Application::root_window = nullptr;
 
 void AIWM::Application::start(){
-    //Application::root_window = new Slider({100 + 100, 100}, {10, 10}, {100, 100 + 100}, nullptr);
+    Application::root_window = new DesktopWindow();
 
     /*
+        new Slider({100 + 100, 100}, {10, 10}, {100, 100 + 100}, nullptr);
+
         new HelloWorldButton({100, 100}, {100, 100});
     Application::root_window = new Slider({100, 100}, {100, 100}, {100, 300});
     Application::root_window = new TextView({100, 300}, {200, 300}, R"(Давай ронять слова,
@@ -66,14 +68,12 @@ void AIWM::Application::start(){
 
 void AIWM::Application::open_window(AbstractWindow* new_window)
 {
-    root_windows.push_back(new_window);
+    root_window->add_subwindow(new_window);
 }
 
 void AIWM::Application::stop()
 {
-    for (auto win: root_windows) {
-        delete win;
-    }
+    delete root_window;
 
     GraphicSystem::stop();
     EventSystem::stop();
@@ -81,11 +81,10 @@ void AIWM::Application::stop()
 
 void AIWM::Application::run()
 {
+    auto redraw = RedrawEvent();
     while (GraphicSystem::is_running()){
-        for (auto win: root_windows) {
-            win->handle_event(EventSystem::poll_event());
-            win->handle_event(new RedrawEvent());
-        }
+        root_window->handle_event(EventSystem::poll_event());
+        root_window->handle_event(&redraw);
 
         GraphicSystem::display_desktop();
     }
