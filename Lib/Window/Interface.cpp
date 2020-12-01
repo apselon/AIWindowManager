@@ -1,7 +1,8 @@
 #include "Interface.hpp"
 
-bool Draggable::on_mouse_move(const Vector2d& pos)
+bool Draggable::on_mouse_click(const Vector2d& pos)
 {
+    //Большая проблема, тут нужен contains
     is_pressed = true;
     return true;
 }
@@ -16,7 +17,9 @@ bool Draggable::on_mouse_release(const Vector2d& pos)
     return false;
 }
 
-bool on_mouse_move(const Vector2d& pos) {
+bool Draggable::on_mouse_move(const Vector2d& pos) {
     if (!is_pressed) return false;
+
     drag_to(pos);
+    return true;
 }

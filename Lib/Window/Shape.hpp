@@ -5,6 +5,7 @@ class AbstractShape {
 public:
     virtual bool draw() = 0;
     virtual bool contains(const Vector2d& point) = 0;
+    virtual ~AbstractShape() = default;
 };
 
 //================================================================================

@@ -30,9 +30,15 @@ AbstractWindow::~AbstractWindow()
 //================================================================================
 
 template <class Shape>
+ShapedWindow<Shape>::ShapedWindow(const Shape& shape)
+    :shape(shape) {}
+
+template <class Shape>
 void ShapedWindow<Shape>::draw()
 {
     shape.draw();
 }
+
+template class ShapedWindow<RectShape>;
 //================================================================================
 

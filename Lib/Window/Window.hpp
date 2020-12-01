@@ -22,7 +22,7 @@ protected:
 
 public: 
     AbstractWindow() = default;
-    virtual bool handle_event(const Event& event) = 0;
+    virtual bool handle_event(const Event* event) = 0;
     virtual void add_subwindow(AbstractWindow* another);
     virtual ~AbstractWindow();
 };
@@ -34,6 +34,9 @@ class ShapedWindow: public AbstractWindow, public Drawable {
 protected:
     Shape shape = {};
     void draw() override;
+
+public:
+    ShapedWindow(const Shape& shape);
 };
 
 //================================================================================
