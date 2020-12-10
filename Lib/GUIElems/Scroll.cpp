@@ -78,6 +78,13 @@ void Slider::drag_to(const Vector2d& click) {
 
 //================================================================================
 
+ScrollView::ScrollView(const Vector2d& pos, const Vector2d& size)
+    :RectWindow({pos, size}) {}
+
+ScrollView::handle_scroll(const Vector2d& quant) {
+
+}
+
 /*
 TextView::TextView(const Vector2d& pos, const Vector2d& size, const char* text)
     :pos(pos), size(size), text(text)

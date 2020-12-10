@@ -3,10 +3,9 @@
 
 class Scrollable {
 public:
-    virtual bool handle_scroll(double quant) = 0;
+    virtual bool handle_scroll(const Vector2d& quant) = 0;
     virtual ~Scrollable() = default;
 };
-
 
 enum class Orientation {
     VERTICAL,
@@ -28,7 +27,15 @@ public:
            const Orientation orientation = Orientation::VERTICAL);
 
     void drag_to(const Vector2d& click) override;
-    bool handle_event(const Event* slider) override;
+    bool handle_event(const Event* event) override;
+};
+
+class ScrollView: public RectWindow, public Scrollable {
+public:
+    ScrollView(const Vector2d& pos, const Vector2d& size);
+    bool handle_scroll(const Vector2d& quant) override;
+    bool handle_event(const Event* event) override;
+    void draw() override;
 };
 
 /*
