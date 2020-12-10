@@ -25,3 +25,8 @@ void RectShape::set_pos(const Vector2d& new_pos)
 {
     pos = new_pos;
 }
+
+void RectShape::move_by(const Vector2d& delta)
+{
+    pos += delta;
+}
