@@ -75,7 +75,7 @@ void Slider::drag_to(const Vector2d& click) {
     shape.set_pos(new_pos);
 
     if (parent != nullptr) {
-        //parent->handle_scroll(-(new_pos.y - limits.x) / 100);
+        parent->handle_scroll({0, -(new_pos.y - limits.x) / 100});
     }
 }
 
