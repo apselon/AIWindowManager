@@ -40,6 +40,10 @@ struct Vector2 {
         return x * another.x +  y * another.y;
     }
 
+    Vector2 operator *(const Vector2& another) const {
+        return {x * another.x, y * another.y};
+    }
+
     Vector2 operator *(const T& mul) const {
         return {x * mul, y * mul};
     }
