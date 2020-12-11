@@ -5,12 +5,12 @@
 
 int main(void){
     AIWM::Application::start();
-    AIWM::Application::open_window(new Slider({100 + 200, 100}, {10, 10}, {100, 100 + 100}, nullptr));
 
     auto scroll_view = new ScrollView({10, 10}, {100, 100});
     scroll_view->add_subwindow(new TextLabel({0, 0}, {20, 20}, "Hello World!", 40));
     //scroll_view->add_subwindow(new HelloWorldButton({0, 0}, {20, 20}));
     AIWM::Application::open_window(scroll_view);
+    AIWM::Application::open_window(new Slider({100 + 200, 100}, {10, 10}, {100, 100 + 100}, scroll_view));
 
 
     AIWM::Application::run();
