@@ -11,7 +11,7 @@ Slider::Slider(const Vector2d& pos, const Vector2d& size, const Vector2d& limits
 }
 
 bool Slider::handle_event(const Event* event) {
-    if (event == nullptr) return false;
+    if (event == nullptr) return true;
 
     Vector2d pos = {};
     auto type = event->get_type();
@@ -93,7 +93,7 @@ bool ScrollView::handle_scroll(const Vector2d& quant)
 
 bool ScrollView::handle_event(const Event* event)
 {
-    if (event == nullptr) return false;
+    if (event == nullptr) return true;
 
     Vector2d pos = {};
     auto type = event->get_type();
