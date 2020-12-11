@@ -59,6 +59,7 @@ void SFMLGraphicSystem::push_target(const Vector2d& size, const Vector2d& offset
 {
     auto* sf_texture = new sf::RenderTexture();
     sf_texture->create(size.x, size.y);
+    sf_texture->clear(sf::Color::White);
     draw_targets.push(sf_texture);
     draw_offsets.push(offset);
 }
@@ -73,6 +74,7 @@ void SFMLGraphicSystem::pop_target_to_display(const Vector2d& pos)
     sf_sprite.setPosition(to_sfVect2f(pos));
 
     draw_targets.pop();
+    draw_offsets.pop();
     draw_targets.top()->draw(sf_sprite);
     delete flushed_texture;
 }
@@ -81,7 +83,7 @@ void SFMLGraphicSystem::draw_rect(const Vector2d& pos, const Vector2d& size)
 {
     auto sf_rect = sf::RectangleShape();
     sf_rect.setSize(to_sfVect2f(size));
-    sf_rect.setPosition(to_sfVect2f(pos));
+    sf_rect.setPosition(to_sfVect2f(pos - draw_offsets.top()));
     sf_rect.setFillColor(sf::Color::Red);
 
     draw_targets.top()->draw(sf_rect);
@@ -98,7 +100,7 @@ void SFMLGraphicSystem::draw_text(const std::string& text, const Vector2d& pos, 
     sf_text.setCharacterSize(size);
     sf_text.setFillColor(sf::Color::Black);
 
-    sf_text.setPosition(to_sfVect2f(pos));
+    sf_text.setPosition(to_sfVect2f(pos - draw_offsets.top()));
     draw_targets.top()->draw(sf_text);
 }
 
