@@ -21,6 +21,7 @@ public:
     bool draw() override;
     bool contains(const Vector2d& point) override;
     Vector2d get_pos() const;
+    Vector2d get_size() const;
     void set_pos(const Vector2d& new_pos);
     void move_by(const Vector2d& delta);
 };

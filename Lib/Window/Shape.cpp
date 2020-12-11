@@ -21,6 +21,11 @@ Vector2d RectShape::get_pos() const
     return pos;
 }
 
+Vector2d RectShape::get_size() const
+{
+    return size;
+}
+
 void RectShape::set_pos(const Vector2d& new_pos)
 {
     pos = new_pos;
