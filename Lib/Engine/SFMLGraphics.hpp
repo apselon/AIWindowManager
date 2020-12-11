@@ -28,9 +28,7 @@ public:
     static bool is_running();
 
     static void draw_rect(const Vector2d& pos, const Vector2d& size);
-    static void draw_text(const char* text, const Vector2d& pos, size_t size);
-    static void draw_scrollable_text(const std::string& text, const Vector2d& pos, 
-                                     const Vector2d& size, double offset);
+    static void draw_text(const std::string& text, const Vector2d& pos, size_t size);
 
     static void push_target(const Vector2d& size, const Vector2d& offset);
     static void pop_target_to_display(const Vector2d& pos);

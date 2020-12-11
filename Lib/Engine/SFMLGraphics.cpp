@@ -8,6 +8,7 @@
 #include <SFML/System/String.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/VideoMode.hpp>
+#include <string>
 #include "SFMLGraphics.hpp"
 
 
@@ -58,7 +59,6 @@ void SFMLGraphicSystem::push_target(const Vector2d& size, const Vector2d& offset
 {
     auto* sf_texture = new sf::RenderTexture();
     sf_texture->create(size.x, size.y);
-    sf_texture->clear(sf::Color::White);
     draw_targets.push(sf_texture);
     draw_offsets.push(offset);
 }
@@ -87,18 +87,18 @@ void SFMLGraphicSystem::draw_rect(const Vector2d& pos, const Vector2d& size)
     draw_targets.top()->draw(sf_rect);
 }
 
-void SFMLGraphicSystem::draw_text(const char* text, const Vector2d& pos, size_t size)
+void SFMLGraphicSystem::draw_text(const std::string& text, const Vector2d& pos, size_t size)
 {
     auto sf_text = sf::Text();
     auto sf_font = sf::Font();
 
     sf_font.loadFromFile("Misc/SanFrancisco.ttf");
-    sf_text.setString(text);
+    sf_text.setString(sf::String::fromUtf8(text.begin(), text.end()));
     sf_text.setFont(sf_font);
     sf_text.setCharacterSize(size);
     sf_text.setFillColor(sf::Color::Black);
-    sf_text.setPosition(to_sfVect2f(pos));
 
+    sf_text.setPosition(to_sfVect2f(pos));
     draw_targets.top()->draw(sf_text);
 }
 
