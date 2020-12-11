@@ -1,4 +1,5 @@
 #include "Scroll.hpp"
+#include "../Engine/SFMLGraphics.hpp"
 
 Slider::Slider(const Vector2d& pos, const Vector2d& size, const Vector2d& limits,
                Scrollable* parent,
@@ -13,6 +14,12 @@ bool Slider::handle_event(const Event* event) {
     if (event == nullptr) return false;
 
     Vector2d pos = {};
+    auto type = event->get_type();
+
+    if (type == EventType::Redraw) {
+        draw();
+        return false;
+    }
 
     switch (event->get_type()) {
         case EventType::MouseMove:
@@ -43,10 +50,6 @@ bool Slider::handle_event(const Event* event) {
 
             break;
 
-        case EventType::Redraw:
-            draw();
-            break;
-
         default:
             return false;
     }
@@ -72,7 +75,7 @@ void Slider::drag_to(const Vector2d& click) {
     shape.set_pos(new_pos);
 
     if (parent != nullptr) {
-        parent->handle_scroll(-(new_pos.y - limits.x) / 100);
+        //parent->handle_scroll(-(new_pos.y - limits.x) / 100);
     }
 }
 
@@ -81,8 +84,34 @@ void Slider::drag_to(const Vector2d& click) {
 ScrollView::ScrollView(const Vector2d& pos, const Vector2d& size)
     :RectWindow({pos, size}) {}
 
-ScrollView::handle_scroll(const Vector2d& quant) {
+bool ScrollView::handle_scroll(const Vector2d& quant)
+{
+    offset = quant * shape.get_size();
 
+    return true;
+}
+
+bool ScrollView::handle_event(const Event* event)
+{
+    if (event == nullptr) return false;
+
+    Vector2d pos = {};
+    auto type = event->get_type();
+
+    if (type == EventType::Redraw) {
+        draw();
+        GraphicSystem::push_target(shape.get_size(), offset);
+        dispatch_event(event);
+        GraphicSystem::pop_target_to_display(shape.get_pos());
+        return false;
+    }
+
+    return dispatch_event(event);
+}
+
+void ScrollView::draw()
+{
+    shape.draw();
 }
 
 /*

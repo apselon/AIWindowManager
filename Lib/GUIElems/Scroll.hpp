@@ -30,8 +30,14 @@ public:
     bool handle_event(const Event* event) override;
 };
 
+//================================================================================
+
 class ScrollView: public RectWindow, public Scrollable {
+protected:
+    Vector2d offset = {};
+
 public:
+
     ScrollView(const Vector2d& pos, const Vector2d& size);
     bool handle_scroll(const Vector2d& quant) override;
     bool handle_event(const Event* event) override;
