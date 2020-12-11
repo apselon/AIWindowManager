@@ -1,18 +1,22 @@
 #include "Label.hpp"
 
-/*
-TextLabel::TextLabel(const char* text, double x, double y, size_t size)
-    :buffer(text), pos(x, y), text_size(size) {};
 
-TextLabel::TextLabel(const char* text, const Vector2d& pos, size_t size)
-    :buffer(text), pos(pos), text_size(size) {};
+TextLabel::TextLabel(const Vector2d& pos, const Vector2d& size,  const char* text, size_t text_size)
+    :RectWindow({pos, size}), buffer(text), text_size(text_size) {};
 
-void TextLabel::on_redraw() {
-    GraphicSystem::draw_text(buffer, pos, text_size);
-}
+bool TextLabel::handle_event(const Event* event)
+{
+    if (event == nullptr) return true;
 
-bool TextLabel::on_mouse_click(const Vector2d&) {
+    if (event->get_type() == EventType::Redraw) {
+        draw();
+    }
+
     return false;
 }
 
-*/
+void TextLabel::draw()
+{
+    GraphicSystem::draw_text(buffer, pos, text_size);
+}
+
