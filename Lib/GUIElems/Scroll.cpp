@@ -75,7 +75,7 @@ void Slider::drag_to(const Vector2d& click) {
     shape.set_pos(new_pos);
 
     if (parent != nullptr) {
-        parent->handle_scroll({0, -(new_pos.y - limits.x) / 100});
+        parent->handle_scroll({0, (new_pos.y - limits.x) / 100});
     }
 }
 
@@ -102,7 +102,7 @@ bool ScrollView::handle_event(const Event* event)
         draw();
         GraphicSystem::push_target(shape.get_size(), offset);
         dispatch_event(event);
-        GraphicSystem::pop_target_to_display(shape.get_pos());
+        GraphicSystem::pop_target_to_display(shape.get_pos() * 1.1);
         return false;
     }
 
@@ -113,31 +113,3 @@ void ScrollView::draw()
 {
     shape.draw();
 }
-
-/*
-TextView::TextView(const Vector2d& pos, const Vector2d& size, const char* text)
-    :pos(pos), size(size), text(text)
-{
-    slider = new Slider({pos.x + size.x, pos.y}, {10, 10}, {pos.y, pos.y + size.y}, this);
-    add_subwindow(slider);
-}
-
-bool TextView::contains        (const Vector2d&) {return false;}
-bool TextView::on_mouse_move   (const Vector2d&) {return false;}
-bool TextView::on_mouse_click  (const Vector2d&) {return false;}
-bool TextView::on_mouse_release(const Vector2d&) {return false;}
-
-void TextView::on_redraw() {
-    GraphicSystem::draw_scrollable_text(std::string(text), pos, size, offset);    
-}
-
-bool TextView::handle_scroll(double quant) {
-    offset = quant * pos.y;
-
-    //if (offset >= size.y) offset = size.y;
-    //if (offset <= 0) offset = 0;
-
-    printf("[%lg]\n", offset);
-    return true;
-}
-*/

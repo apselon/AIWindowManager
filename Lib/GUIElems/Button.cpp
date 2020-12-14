@@ -1,8 +1,9 @@
 #include "Button.hpp"
 #include "../Engine/SFMLGraphics.hpp"
 
-AbstractRectButton::AbstractRectButton(const Vector2d& pos, const Vector2d& size)
-    :RectWindow({pos, size}) {}
+AbstractRectButton::AbstractRectButton(const Vector2d& pos, 
+                                       const Vector2d& size, const char* image)
+    :RectWindow({pos, size, image}) {}
 
 bool AbstractRectButton::handle_event(const Event* event) {
     if (event == nullptr) return false;
@@ -51,8 +52,9 @@ bool AbstractRectButton::handle_event(const Event* event) {
 
 //================================================================================
 
-HelloWorldButton::HelloWorldButton(const Vector2d& pos, const Vector2d& size)
-    :AbstractRectButton(pos, size) {}
+HelloWorldButton::HelloWorldButton(const Vector2d& pos, const Vector2d& size,
+                                   const char* image)
+    :AbstractRectButton(pos, size, image) {}
 
 bool HelloWorldButton::on_mouse_move(const Vector2d& pos) {
     printf("Moved\n");
