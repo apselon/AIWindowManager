@@ -25,3 +25,14 @@ public:
     void set_pos(const Vector2d& new_pos);
     void move_by(const Vector2d& delta);
 };
+
+//================================================================================
+
+class RectSprite: public RectShape {
+protected:
+    const char* image_path = nullptr;
+public:
+    RectSprite(const Vector2d& pos, const Vector2d& size, 
+               const char* image = nullptr);
+    bool draw() override;
+};

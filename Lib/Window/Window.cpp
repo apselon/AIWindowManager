@@ -50,7 +50,7 @@ void ShapedWindow<Shape>::draw()
     shape.draw();
 }
 
-template class ShapedWindow<RectShape>;
+template class ShapedWindow<RectSprite>;
 //================================================================================
 
 

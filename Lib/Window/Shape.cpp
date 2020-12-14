@@ -35,3 +35,21 @@ void RectShape::move_by(const Vector2d& delta)
 {
     pos += delta;
 }
+
+//================================================================================
+
+RectSprite::RectSprite(const Vector2d& pos, const Vector2d& size,
+                       const char* image)
+    :RectShape(pos, size), image_path(image) {}
+
+bool RectSprite::draw()
+{
+    if (image_path == nullptr) {
+        GraphicSystem::draw_rect(pos, size);
+    }
+
+    else {
+        GraphicSystem::draw_texture(pos, image_path);
+    }
+    return true;
+}
