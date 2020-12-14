@@ -5,6 +5,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/String.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/VideoMode.hpp>
@@ -66,17 +67,30 @@ void SFMLGraphicSystem::push_target(const Vector2d& size, const Vector2d& offset
 
 void SFMLGraphicSystem::pop_target_to_display(const Vector2d& pos)
 {
+    draw_offsets.pop();
+
     auto flushed_texture = static_cast<sf::RenderTexture*>(draw_targets.top());
+    draw_targets.pop();
     flushed_texture->display();
 
     auto sf_sprite = sf::Sprite();
     sf_sprite.setTexture(flushed_texture->getTexture());
     sf_sprite.setPosition(to_sfVect2f(pos));
 
-    draw_targets.pop();
-    draw_offsets.pop();
     draw_targets.top()->draw(sf_sprite);
     delete flushed_texture;
+}
+
+void SFMLGraphicSystem::draw_texture(const Vector2d& pos, 
+                                     const char* image_name)
+{
+    auto sf_texture = sf::Texture();
+    sf_texture.loadFromFile(image_name);
+    auto sf_sprite = sf::Sprite();
+    sf_sprite.setTexture(sf_texture);
+    sf_sprite.setPosition(to_sfVect2f(pos));
+    draw_targets.top()->draw(sf_sprite);
+    
 }
 
 void SFMLGraphicSystem::draw_rect(const Vector2d& pos, const Vector2d& size) 
@@ -103,28 +117,3 @@ void SFMLGraphicSystem::draw_text(const std::string& text, const Vector2d& pos, 
     sf_text.setPosition(to_sfVect2f(pos - draw_offsets.top()));
     draw_targets.top()->draw(sf_text);
 }
-
-/*
-void SFMLGraphicSystem::draw_scrollable_text(
-        const std::string& text, const Vector2d& pos, 
-        const Vector2d& size, double offset)
-{
-    auto sf_text = sf::Text();
-    auto sf_font = sf::Font();
-
-    sf_font.loadFromFile("Misc/SanFrancisco.ttf");
-    sf_text.setString(sf::String::fromUtf8(text.begin(), text.end()));
-    sf_text.setFont(sf_font);
-    sf_text.setCharacterSize(12);
-    sf_text.setFillColor(sf::Color::Black);
-
-    sf_text.setPosition(0, offset); 
-
-
-    auto sf_sprite = sf::Sprite();
-    sf_sprite.setTexture(sf_texture.getTexture());
-    sf_sprite.setPosition(to_sfVect2f(pos));
-    sf_desktop->draw(sf_sprite);
-
-}
-*/

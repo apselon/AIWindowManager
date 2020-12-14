@@ -2,10 +2,12 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include <stack>
 #include "../Aux/Auxiliary.hpp"
 
 using std::stack;
+
 
 class SFMLGraphicSystem {
 
@@ -29,6 +31,8 @@ public:
 
     static void draw_rect(const Vector2d& pos, const Vector2d& size);
     static void draw_text(const std::string& text, const Vector2d& pos, size_t size);
+    static void draw_texture(const Vector2d& pos, 
+                             const char* image_name);
 
     static void push_target(const Vector2d& size, const Vector2d& offset);
     static void pop_target_to_display(const Vector2d& pos);
