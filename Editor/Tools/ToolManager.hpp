@@ -5,9 +5,9 @@
 
 class Tool {
 public:
-    virtual void init(Image& canvas, const Vector2d& pos);
-    virtual void apply(Image& canvas, const Vector2d& pos);
-    virtual void finalize(Image& canvas, const Vector2d& pos);
+    virtual void init(Image& canvas, const Vector2d& pos) = 0;
+    virtual void apply(Image& canvas, const Vector2d& pos) = 0;
+    virtual void finalize(Image& canvas, const Vector2d& pos) = 0;
 
     virtual ~Tool();
 };
@@ -17,7 +17,7 @@ public:
 class Pencil: public Tool {
 protected:
     Color color = {};
-    int64_t thickness = 1;
+    int64_t thickness = 5;
     Vector2d prev_pos = {-1, -1};
 
 public:

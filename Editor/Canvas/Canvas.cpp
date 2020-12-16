@@ -9,7 +9,7 @@ Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 Image::Image(const Vector2d& pos, const Vector2d& size)
     :ShapedWindow<RectShape>({pos, size}) {
 
-        data.assign((size.x + 1) * (size.y + 1) * sizeof(Color), 0);
+        data.assign((size.x + 10) * (size.y + 10) * sizeof(Color), 0);
     }
 
 void Image::set_color(int64_t x, int64_t y, const Color& color)
@@ -97,4 +97,9 @@ bool Image::handle_event(const Event* event)
     }
 
     return false;
+}
+
+Vector2d Image::get_size()
+{
+    return shape.get_size();
 }

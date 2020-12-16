@@ -28,4 +28,5 @@ public:
     void set_color(int64_t x, int64_t y, const Color& color);
     Color get_color(int64_t x, int64_t y);
     uint8_t* get_data();
+    Vector2d get_size();
 };
