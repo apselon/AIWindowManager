@@ -75,7 +75,7 @@ void Slider::drag_to(const Vector2d& click) {
     shape.set_pos(new_pos);
 
     if (parent != nullptr) {
-        parent->handle_scroll({0, (new_pos.y - limits.x) / 100});
+        parent->handle_scroll({0, (new_pos.y - limits.x) / 100.0});
     }
 }
 
@@ -84,9 +84,10 @@ void Slider::drag_to(const Vector2d& click) {
 ScrollView::ScrollView(const Vector2d& pos, const Vector2d& size)
     :RectWindow({pos, size}) {}
 
-bool ScrollView::handle_scroll(const Vector2d& quant)
+bool ScrollView::handle_scroll(const Vector2<double>& quant)
 {
-    offset = quant * shape.get_size();
+    offset = {static_cast<int64_t>(quant.x * shape.get_size().x),
+              static_cast<int64_t>(quant.y * shape.get_size().y)};
 
     return true;
 }
@@ -102,7 +103,7 @@ bool ScrollView::handle_event(const Event* event)
         draw();
         GraphicSystem::push_target(shape.get_size(), offset);
         dispatch_event(event);
-        GraphicSystem::pop_target_to_display(shape.get_pos() * 1.1);
+        GraphicSystem::pop_target_to_display(shape.get_pos());
         return false;
     }
 

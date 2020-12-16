@@ -93,6 +93,16 @@ void SFMLGraphicSystem::draw_texture(const Vector2d& pos,
     
 }
 
+void SFMLGraphicSystem::draw_texture(const Vector2d& pos, 
+                                     const sf::Texture& sf_texture)
+{
+    auto sf_sprite = sf::Sprite();
+    sf_sprite.setTexture(sf_texture);
+    sf_sprite.setPosition(to_sfVect2f(pos));
+    draw_targets.top()->draw(sf_sprite);
+    
+}
+
 void SFMLGraphicSystem::draw_rect(const Vector2d& pos, const Vector2d& size) 
 {
     auto sf_rect = sf::RectangleShape();
@@ -116,4 +126,14 @@ void SFMLGraphicSystem::draw_text(const std::string& text, const Vector2d& pos, 
 
     sf_text.setPosition(to_sfVect2f(pos - draw_offsets.top()));
     draw_targets.top()->draw(sf_text);
+}
+
+void SFMLGraphicSystem::draw_bitmap(const vector<uint8_t>& image,
+                                    const Vector2d& pos, const Vector2d& size)
+{
+    auto sf_texture = sf::Texture();
+    sf_texture.create(size.x, size.y);
+    sf_texture.update(image.data());
+
+    draw_texture(pos, sf_texture);
 }

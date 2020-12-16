@@ -3,7 +3,7 @@
 
 class Scrollable {
 public:
-    virtual bool handle_scroll(const Vector2d& quant) = 0;
+    virtual bool handle_scroll(const Vector2<double>& quant) = 0;
     virtual ~Scrollable() = default;
 };
 
@@ -39,7 +39,7 @@ protected:
 public:
 
     ScrollView(const Vector2d& pos, const Vector2d& size);
-    bool handle_scroll(const Vector2d& quant) override;
+    bool handle_scroll(const Vector2<double>& quant) override;
     bool handle_event(const Event* event) override;
     void draw() override;
 };

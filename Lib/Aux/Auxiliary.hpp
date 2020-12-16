@@ -2,6 +2,7 @@
 
 #include <list>
 #include <queue>
+#include <vector>
 #include <cmath>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -49,8 +50,8 @@ struct Vector2 {
     }
 };
 
-using Vector2d = Vector2<double>;
-//using Vector2sz = Vector2<double>;
+using Vector2d = Vector2<int64_t>;
 
 using std::list;
 using std::queue;
+using std::vector;

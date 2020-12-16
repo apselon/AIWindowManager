@@ -33,6 +33,12 @@ public:
     static void draw_text(const std::string& text, const Vector2d& pos, size_t size);
     static void draw_texture(const Vector2d& pos, 
                              const char* image_name);
+    
+    static void draw_texture(const Vector2d& pos, 
+                             const sf::Texture& sf_texture);
+
+    static void draw_bitmap(const vector<uint8_t>& image, 
+                            const Vector2d& pos, const Vector2d& size);
 
     static void push_target(const Vector2d& size, const Vector2d& offset);
     static void pop_target_to_display(const Vector2d& pos);
