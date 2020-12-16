@@ -1,6 +1,7 @@
 #pragma once
 #include "../../Lib/Aux/Auxiliary.hpp"
 #include "../../Lib/Window/Window.hpp"
+#include "../../Lib/Engine/SFMLGraphics.hpp"
 
 struct Color {
     uint8_t r = 0;

@@ -1,5 +1,4 @@
 #include "Canvas.hpp"
-#include "../../Lib/Engine/SFMLGraphics.hpp"
 #include "../Tools/ToolManager.hpp"
 
 Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
@@ -8,11 +7,14 @@ Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 //================================================================================
 
 Image::Image(const Vector2d& pos, const Vector2d& size)
-    :ShapedWindow<RectShape>({pos, size}) {}
+    :ShapedWindow<RectShape>({pos, size}) {
+
+        data.assign((size.x + 1) * (size.y + 1) * sizeof(Color), 0);
+    }
 
 void Image::set_color(int64_t x, int64_t y, const Color& color)
 {
-    int64_t i = (y * shape.get_size().x + x) * sizeof(Color);
+    int64_t i = (x + y * shape.get_size().x) * sizeof(Color);
     data[i    ] = color.r;
     data[i + 1] = color.g;
     data[i + 2] = color.b;
@@ -70,18 +72,24 @@ bool Image::handle_event(const Event* event)
             pos = dynamic_cast<const MouseEvent*>(event)->get_pos();
             if (shape.contains(pos)) {
                 on_mouse_click(pos);
+                delete event;
+                return true;
             }
 
         case (EventType::MouseMove):
             pos = dynamic_cast<const MouseEvent*>(event)->get_pos();
             if (shape.contains(pos)) {
                 on_mouse_move(pos);
+                delete event;
+                return true;
             }
 
         case (EventType::MouseRelease):
             pos = dynamic_cast<const MouseEvent*>(event)->get_pos();
             if (shape.contains(pos)) {
                 on_mouse_release(pos);
+                delete event;
+                return true;
             }
 
         default:
