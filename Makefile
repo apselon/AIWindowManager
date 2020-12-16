@@ -3,8 +3,11 @@ CXXFLAGS = -Wall -Weffc++ -Wfloat-equal -Wconversion -Wpedantic -Wextra -ftrapv 
 LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system
 OBJDIR = .objects
 
-app.run: main.cpp $(OBJDIR)/Application.o $(OBJDIR)/SFMLEvents.o $(OBJDIR)/SFMLGraphics.o $(OBJDIR)/Window.o $(OBJDIR)/Shape.o $(OBJDIR)/Interface.o $(OBJDIR)/Event.o $(OBJDIR)/Button.o $(OBJDIR)/Label.o $(OBJDIR)/Scroll.o
+app.run: main.cpp AIWM.a 
 	$(CXX) $(CXXFLAGS) $^ $(LDLIBS) -o app.run
+
+AIWM.a: $(OBJDIR)/Application.o $(OBJDIR)/SFMLEvents.o $(OBJDIR)/SFMLGraphics.o $(OBJDIR)/Window.o $(OBJDIR)/Shape.o $(OBJDIR)/Interface.o $(OBJDIR)/Event.o $(OBJDIR)/Button.o $(OBJDIR)/Label.o $(OBJDIR)/Scroll.o
+	ar rvs AIWM.a $^
 
 $(OBJDIR)/Scroll.o: Lib/GUIElems/Scroll.cpp Lib/GUIElems/Scroll.hpp
 	$(CXX) $(CXXFLAGS) -c Lib/GUIElems/Scroll.cpp -o $(OBJDIR)/Scroll.o
