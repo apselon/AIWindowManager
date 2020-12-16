@@ -2,19 +2,19 @@
 #include "Lib/GUIElems/Scroll.hpp"
 #include "Lib/GUIElems/Button.hpp"
 #include "Lib/GUIElems/Label.hpp"
+#include "Editor/Canvas/Canvas.hpp"
+#include "Editor/Tools/ToolManager.hpp"
+
+using app = AIWM::Application;
 
 int main(void){
-    AIWM::Application::start();
+    app::start();
 
-    auto scroll_view = new ScrollView({10, 10}, {200, 100});
-    scroll_view->add_subwindow(new TextLabel({0, 0}, {20, 20}, "Hello World!", 40));
-    //scroll_view->add_subwindow(new HelloWorldButton({0, 0}, {20, 20}));
-    AIWM::Application::open_window(scroll_view);
-    AIWM::Application::open_window(new Slider({100 + 200, 100}, {10, 10}, {100, 100 + 100}, scroll_view));
+    app::open_window(new Image({0, 0}, {500, 500}));
+    auto pencil = new Pencil();
+    pencil->set_color({0, 0, 0, 255});
+    ToolManager::set_active(pencil);
 
-    AIWM::Application::open_window(new HelloWorldButton({400, 400}, {100, 100}, "Misc/Images/Floppa.jpg"));
-
-
-    AIWM::Application::run();
-    AIWM::Application::stop();
+    app::run();
+    app::stop();
 };

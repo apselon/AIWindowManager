@@ -3,7 +3,7 @@ CXXFLAGS = -Wall -Weffc++ -Wfloat-equal -Wconversion -Wpedantic -Wextra -ftrapv 
 LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system
 OBJDIR = .objects
 
-app.run: main.cpp AIWM.a 
+app.run: main.cpp AIWM.a $(OBJDIR)/Canvas.o $(OBJDIR)/ToolManager.o
 	$(CXX) $(CXXFLAGS) $^ $(LDLIBS) -o app.run
 
 AIWM.a: $(OBJDIR)/Application.o $(OBJDIR)/SFMLEvents.o $(OBJDIR)/SFMLGraphics.o $(OBJDIR)/Window.o $(OBJDIR)/Shape.o $(OBJDIR)/Interface.o $(OBJDIR)/Event.o $(OBJDIR)/Button.o $(OBJDIR)/Label.o $(OBJDIR)/Scroll.o
@@ -39,3 +39,8 @@ $(OBJDIR)/Button.o: Lib/GUIElems/Button.cpp Lib/GUIElems/Button.hpp
 $(OBJDIR)/Label.o: Lib/GUIElems/Label.cpp Lib/GUIElems/Label.hpp
 	$(CXX) $(CXXFLAGS) -c Lib/GUIElems/Label.cpp -o $(OBJDIR)/Label.o
 
+$(OBJDIR)/Canvas.o: Editor/Canvas/Canvas.cpp Editor/Canvas/Canvas.hpp 
+	$(CXX) $(CXXFLAGS) -c Editor/Canvas/Canvas.cpp -o $(OBJDIR)/Canvas.o
+
+$(OBJDIR)/ToolManager.o: Editor/Tools/ToolManager.cpp Editor/Tools/ToolManager.hpp 
+	$(CXX) $(CXXFLAGS) -c Editor/Tools/ToolManager.cpp -o $(OBJDIR)/ToolManager.o
