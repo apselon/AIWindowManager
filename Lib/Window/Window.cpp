@@ -1,5 +1,4 @@
 #include "Window.hpp"
-#include "../../Lib/Engine/SFMLGraphics.hpp"
 
 
 bool AbstractWindow::dispatch_event(const Event* event)
@@ -51,6 +50,7 @@ void ShapedWindow<Shape>::draw()
 }
 
 template class ShapedWindow<RectSprite>;
+template class ShapedWindow<RectShape>;
 //================================================================================
 
 

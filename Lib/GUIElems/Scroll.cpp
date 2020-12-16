@@ -21,7 +21,7 @@ bool Slider::handle_event(const Event* event) {
         return false;
     }
 
-    switch (event->get_type()) {
+    switch (type) {
         case EventType::MouseMove:
             pos = dynamic_cast<const MouseEvent*>(event)->get_pos();
             if (shape.contains(pos) || is_pressed) {
