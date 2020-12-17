@@ -23,7 +23,7 @@ protected:
 
 public:
     Slider(const Vector2d& pos, const Vector2d& size, const Vector2d& limits,
-           Scrollable* parent = nullptr,
+           Scrollable* parent = nullptr, const char* image = nullptr,
            const Orientation orientation = Orientation::VERTICAL);
 
     void drag_to(const Vector2d& click) override;

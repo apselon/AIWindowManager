@@ -2,9 +2,9 @@
 #include "../Engine/SFMLGraphics.hpp"
 
 Slider::Slider(const Vector2d& pos, const Vector2d& size, const Vector2d& limits,
-               Scrollable* parent,
+               Scrollable* parent, const char* image,
                const Orientation orientation)
-    :RectWindow({pos, size}), limits(limits), 
+    :RectWindow({pos, size, image}), limits(limits), 
     orientation(orientation), parent(parent)
 {
     dir = {0, 1};

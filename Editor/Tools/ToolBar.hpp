@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Lib/GUIElems/Button.hpp"
+#include "../../Lib/GUIElems/Scroll.hpp"
 #include "ToolManager.hpp"
 
 class ToolButton: public AbstractRectButton {
@@ -14,4 +15,16 @@ protected:
 public:
     ToolButton(const Vector2d& pos, const Vector2d& size, 
                const char* icon = nullptr, Tool* tool = nullptr);
+};
+
+//================================================================================
+
+class ThicknessSlider: public Slider {
+protected:
+
+public:
+    ThicknessSlider(const Vector2d& pos, const Vector2d& size, 
+                    const Vector2d& limits, const char* icon);
+
+    void drag_to(const Vector2d& pos) override;
 };
