@@ -66,20 +66,26 @@ void Pencil::apply(Image& canvas, const Vector2d& pos)
     auto thickness = ToolManager::get_thickness();
     auto size = canvas.get_size();
 
+    if (-1 == prev_pos.x || -1 == prev_pos.y) {
+        prev_pos = pos;
+    }
 
-    double delta = std::max(std::abs(pos.x - prev_pos.x), std::abs(pos.y - prev_pos.y)) + 1;
-    double dx = (pos.x - prev_pos.x) / delta;
-    double dy = (pos.y - prev_pos.y) / delta;
+	double x_start = std::min(pos.x, prev_pos.x);
+    double y_start = (x_start == pos.x)?(pos.y):(prev_pos.y);
+    double x_end = std::max(pos.x, prev_pos.x);
+    double y_end = (x_end == prev_pos.x)?(prev_pos.y):(pos.y);
 
-    auto x_start = prev_pos.x;
-    auto y_start = prev_pos.y;
+    double step = std::max(std::abs(x_end - x_start), std::abs(y_end - y_start)) + 1;
 
-    for (size_t i = 0; i < static_cast<size_t>(delta); ++i) {
+    double dx = (x_end - x_start) / step;
+    double dy = (y_end - y_start) / step;
+
+    for (int i = 0; i < step; ++i) {
         x_start += dx;
         y_start += dy;
 
-        for (auto x = x_start - thickness; x < x_start + thickness; ++x) {
-            for (auto y = y_start - thickness; y < y_start + thickness; ++y) {
+        for (int x = x_start - thickness; x < x_start + thickness; ++x) {
+            for (int y = y_start - thickness; y < y_start + thickness; ++y) {
                 if (0 <= x && x < size.x && 0 <= y && y < size.y) {
                     canvas.set_color(x, y, ToolManager::get_color());
                 }
