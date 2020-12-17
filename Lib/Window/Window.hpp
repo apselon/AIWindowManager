@@ -45,6 +45,7 @@ protected:
 
 public:
     ShapedWindow(const Shape& shape);
+    virtual ~ShapedWindow() {};
 };
 
 //================================================================================

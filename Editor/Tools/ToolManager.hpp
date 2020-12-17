@@ -16,19 +16,29 @@ public:
 
 class Pencil: public Tool {
 protected:
-    Color color = {};
-    int64_t thickness = 5;
     Vector2d prev_pos = {-1, -1};
 
 public:
     Pencil() = default;
+    //Pencil(const Color& color, int64_t thickness);
 
     void init(Image& canvas, const Vector2d& pos) override;
     void apply(Image& canvas, const Vector2d& pos) override;
     void finalize(Image& canvas, const Vector2d& pos) override;
 
-    virtual void set_color(const Color& color);
-    virtual Color get_color();
+};
+
+//================================================================================
+
+class Eraser: public Pencil {
+protected:
+    Color saved_color = {};
+
+public:
+    Eraser() = default;
+
+    void init(Image& canvas, const Vector2d& pos) override;
+    void finalize(Image& canvas, const Vector2d& pos) override;
 };
 
 //================================================================================
@@ -39,6 +49,9 @@ protected:
     static Tool* active_tool;
     static bool is_applying;
 
+    static Color color ;
+    static int64_t thickness ;
+
     ToolManager() = default;
 
 public:
@@ -46,6 +59,10 @@ public:
     static Tool* get_active(); 
     static void add_tool(Tool* new_tool);
     static bool is_active();
+    static void set_color(const Color& color);
+    static Color get_color();
+    static void set_thickness(int64_t new_thickness);
+    static int64_t get_thickness();
 
     static void start_applying(Image& canvas, const Vector2d& pos);
     static void apply(Image& canvas, const Vector2d& pos);

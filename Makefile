@@ -3,10 +3,10 @@ CXXFLAGS = -Wall -Weffc++ -Wfloat-equal -Wconversion -Wpedantic -Wextra -ftrapv 
 LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system
 OBJDIR = .objects
 
-app.run: main.cpp AIWM.a $(OBJDIR)/Canvas.o $(OBJDIR)/ToolManager.o
+app.run: main.cpp AIWM.a $(OBJDIR)/Canvas.o $(OBJDIR)/ToolManager.o 
 	$(CXX) $(CXXFLAGS) $^ $(LDLIBS) -o app.run
 
-AIWM.a: $(OBJDIR)/Application.o $(OBJDIR)/SFMLEvents.o $(OBJDIR)/SFMLGraphics.o $(OBJDIR)/Window.o $(OBJDIR)/Shape.o $(OBJDIR)/Interface.o $(OBJDIR)/Event.o $(OBJDIR)/Button.o $(OBJDIR)/Label.o $(OBJDIR)/Scroll.o
+AIWM.a: $(OBJDIR)/Application.o $(OBJDIR)/SFMLEvents.o $(OBJDIR)/SFMLGraphics.o $(OBJDIR)/Window.o $(OBJDIR)/Shape.o $(OBJDIR)/Interface.o $(OBJDIR)/Event.o $(OBJDIR)/Button.o $(OBJDIR)/Label.o $(OBJDIR)/Scroll.o $(OBJDIR)/ToolBar.o
 	ar rvs AIWM.a $^
 
 $(OBJDIR)/Scroll.o: Lib/GUIElems/Scroll.cpp Lib/GUIElems/Scroll.hpp
@@ -36,6 +36,9 @@ $(OBJDIR)/Interface.o: Lib/Window/Interface.cpp Lib/Window/Interface.hpp
 $(OBJDIR)/Button.o: Lib/GUIElems/Button.cpp Lib/GUIElems/Button.hpp
 	$(CXX) $(CXXFLAGS) -c Lib/GUIElems/Button.cpp -o $(OBJDIR)/Button.o
 
+$(OBJDIR)/HWB.o: Lib/GUIElems/HWB.cpp Lib/GUIElems/HWB.hpp
+	$(CXX) $(CXXFLAGS) -c Lib/GUIElems/HWB.cpp -o $(OBJDIR)/HWB.o
+
 $(OBJDIR)/Label.o: Lib/GUIElems/Label.cpp Lib/GUIElems/Label.hpp
 	$(CXX) $(CXXFLAGS) -c Lib/GUIElems/Label.cpp -o $(OBJDIR)/Label.o
 
@@ -44,3 +47,7 @@ $(OBJDIR)/Canvas.o: Editor/Canvas/Canvas.cpp Editor/Canvas/Canvas.hpp
 
 $(OBJDIR)/ToolManager.o: Editor/Tools/ToolManager.cpp Editor/Tools/ToolManager.hpp 
 	$(CXX) $(CXXFLAGS) -c Editor/Tools/ToolManager.cpp -o $(OBJDIR)/ToolManager.o
+
+$(OBJDIR)/ToolBar.o: Editor/Tools/ToolBar.cpp Editor/Tools/ToolBar.hpp 
+	$(CXX) $(CXXFLAGS) -c Editor/Tools/ToolBar.cpp -o $(OBJDIR)/ToolBar.o
+

@@ -14,13 +14,3 @@ public:
 
 //================================================================================
 
-class HelloWorldButton: public AbstractRectButton {
-protected:
-    bool on_mouse_click(const Vector2d& override)   override;
-    bool on_mouse_move(const Vector2d& override)    override;
-    bool on_mouse_release(const Vector2d& override) override;
-
-public:
-    HelloWorldButton(const Vector2d&, const Vector2d&,
-                     const char* image = nullptr);
-};

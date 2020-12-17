@@ -7,7 +7,7 @@ protected:
     virtual bool on_mouse_release(const Vector2d& pos)   = 0;
     virtual bool on_mouse_move   (const Vector2d& dest)  = 0;
 public:
-    virtual ~MouseReceptive() = default;
+    virtual ~MouseReceptive() {};
 };
 
 //================================================================================

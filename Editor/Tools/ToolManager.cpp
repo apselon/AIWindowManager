@@ -3,6 +3,8 @@
 
 Tool::~Tool() {}
 
+//Pencil::Pencil(const Color& color, int64_t thickness)
+
 void Pencil::init(Image& canvas, const Vector2d& pos)
 {
     printf("Pencil INIT at (%ld, %ld)\n", pos.x, pos.y);
@@ -18,12 +20,15 @@ void Pencil::apply(Image& canvas, const Vector2d& pos)
 {
     printf("Pencil Apply at (%ld, %ld)\n", pos.x, pos.y);
 
+    auto thickness = ToolManager::get_thickness();
+
     auto x_start = std::max(pos.x - thickness, 1L);
     auto x_end   = std::min(pos.x + thickness, canvas.get_size().x - 1);
 
     auto y_start = std::max(pos.y - thickness, 1L);
     auto y_end   = std::min(pos.y + thickness, canvas.get_size().y - 1);
 
+    /*
     if (prev_pos.x != -1 && prev_pos.y != -1) {
         x_start = std::min(pos.x, prev_pos.x) - thickness;
         x_end   = std::max(pos.x, pos.x) + thickness;;
@@ -31,6 +36,9 @@ void Pencil::apply(Image& canvas, const Vector2d& pos)
         y_start = std::min(pos.y, prev_pos.y) - thickness;
         y_end   = std::max(pos.y, pos.y) + thickness;;
     }
+    */
+
+    auto color = ToolManager::get_color();
 
     for (auto x = x_start; x < x_end; ++x) {
         for (auto y = y_start; y < y_end; ++y) {
@@ -41,14 +49,17 @@ void Pencil::apply(Image& canvas, const Vector2d& pos)
     prev_pos = pos;
 }
 
-void Pencil::set_color(const Color& new_color)
+//================================================================================
+
+void Eraser::init(Image& canvas, const Vector2d& pos)
 {
-    color = new_color;
+    saved_color = ToolManager::get_color();
+    ToolManager::set_color({255, 255, 255, 255});
 }
 
-Color Pencil::get_color()
+void Eraser::finalize(Image& canvas, const Vector2d& pos)
 {
-    return color;
+    ToolManager::set_color(saved_color);
 }
 
 //================================================================================
@@ -56,6 +67,8 @@ Color Pencil::get_color()
 list<Tool*> ToolManager::tools = list<Tool*>();
 Tool* ToolManager::active_tool = nullptr;
 bool ToolManager::is_applying = false;
+Color ToolManager::color = {0, 0, 0, 255};
+int64_t ToolManager::thickness = 3;
 
 void ToolManager::set_active(Tool* tool)
 {
@@ -65,6 +78,26 @@ void ToolManager::set_active(Tool* tool)
 Tool* ToolManager::get_active()
 {
     return active_tool;
+}
+
+void ToolManager::set_color(const Color& new_color)
+{
+    color = new_color;
+}
+
+Color ToolManager::get_color()
+{
+    return color;
+}
+
+void ToolManager::set_thickness(int64_t new_thickness)
+{
+    thickness = new_thickness;
+}
+
+int64_t ToolManager::get_thickness()
+{
+    return thickness;
 }
 
 void ToolManager::add_tool(Tool* new_tool)

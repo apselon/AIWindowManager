@@ -52,21 +52,3 @@ bool AbstractRectButton::handle_event(const Event* event) {
 
 //================================================================================
 
-HelloWorldButton::HelloWorldButton(const Vector2d& pos, const Vector2d& size,
-                                   const char* image)
-    :AbstractRectButton(pos, size, image) {}
-
-bool HelloWorldButton::on_mouse_move(const Vector2d& pos) {
-    printf("Moved\n");
-    return true;
-}
-
-bool HelloWorldButton::on_mouse_click(const Vector2d& pos) {
-    printf("Clicked\n");
-    return true;
-}
-
-bool HelloWorldButton::on_mouse_release(const Vector2d& pos) {
-    printf("Release\n");
-    return true;
-}
