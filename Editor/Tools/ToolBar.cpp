@@ -13,6 +13,12 @@ bool ToolButton::on_mouse_click(const Vector2d& pos)
 bool ToolButton::on_mouse_move(const Vector2d& pos) {return false;}
 bool ToolButton::on_mouse_release(const Vector2d& pos) {return false;}
 
+void ToolButton::draw()
+{
+    GraphicSystem::draw_box(shape.get_pos(), shape.get_size());
+    shape.draw();
+}
+
 //================================================================================
 
 ThicknessSlider::ThicknessSlider(const Vector2d& pos, const Vector2d& size,
@@ -37,4 +43,12 @@ void ThicknessSlider::drag_to(const Vector2d& click)
 
     shape.set_pos(new_pos);
     ToolManager::set_thickness(static_cast<double>(new_pos.y - limits.x) / 100.0 * 20);
+}
+
+void ThicknessSlider::draw()
+{
+    auto pos = shape.get_pos();
+    auto size = shape.get_size();
+    GraphicSystem::draw_box({pos.x, limits.x}, {size.x, limits.y - limits.x + size.y});
+    shape.draw();
 }

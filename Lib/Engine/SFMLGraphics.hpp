@@ -29,6 +29,8 @@ public:
     static void clear_desktop();
     static bool is_running();
 
+    static void draw_line(const Vector2d& start, const Vector2d& finish);
+    static void draw_box(const Vector2d& pos, const Vector2d& size);
     static void draw_rect(const Vector2d& pos, const Vector2d& size);
     static void draw_text(const std::string& text, const Vector2d& pos, size_t size);
     static void draw_texture(const Vector2d& pos, 

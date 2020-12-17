@@ -6,6 +6,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Vertex.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/System/String.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/VideoMode.hpp>
@@ -136,4 +138,23 @@ void SFMLGraphicSystem::draw_bitmap(const vector<uint8_t>& image,
     sf_texture.update(image.data());
 
     draw_texture(pos, sf_texture);
+}
+
+void SFMLGraphicSystem::draw_line(const Vector2d& start, const Vector2d& finish)
+{
+    sf::VertexArray line(sf::Lines, 2);
+    line[0].position = to_sfVect2f(start);
+    line[0].color = sf::Color::Black;
+    line[1].position = to_sfVect2f(finish);
+    line[1].color = sf::Color::Black;
+    draw_targets.top()->draw(line);
+}
+
+void SFMLGraphicSystem::draw_box(const Vector2d& pos, const Vector2d& size)
+{
+    GraphicSystem::draw_line({pos.x, pos.y + size.y}, {pos.x + size.x, pos.y + size.y});
+    GraphicSystem::draw_line(pos, {pos.x + size.x, pos.y}); 
+    GraphicSystem::draw_line(pos, {pos.x, pos.y + size.y});
+    GraphicSystem::draw_line({pos.x + size.x, pos.y }, {pos.x + size.x, pos.y + size.y});
+
 }

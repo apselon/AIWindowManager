@@ -1,6 +1,7 @@
 #include "ToolManager.hpp"
 #include "PluginApi.hpp"
 #include <algorithm>
+#include <cmath>
 
 Tool::~Tool() {}
 
@@ -52,46 +53,42 @@ void PluginWrapper::finalize(Image& canvas, const Vector2d& pos)
 
 void Pencil::init(Image& canvas, const Vector2d& pos)
 {
-    printf("Pencil INIT at (%ld, %ld)\n", pos.x, pos.y);
     prev_pos = {-1, -1};
 }
 
 void Pencil::finalize(Image& canvas, const Vector2d& pos)
 {
-    printf("Pencil FINALIZE at (%ld, %ld)\n", pos.x, pos.y);
 }
 
 void Pencil::apply(Image& canvas, const Vector2d& pos)
 {
-    printf("Pencil Apply at (%ld, %ld)\n", pos.x, pos.y);
 
     auto thickness = ToolManager::get_thickness();
+    auto size = canvas.get_size();
 
-    auto x_start = std::max(pos.x - thickness, 1L);
-    auto x_end   = std::min(pos.x + thickness, canvas.get_size().x - 1);
 
-    auto y_start = std::max(pos.y - thickness, 1L);
-    auto y_end   = std::min(pos.y + thickness, canvas.get_size().y - 1);
+    double delta = std::max(std::abs(pos.x - prev_pos.x), std::abs(pos.y - prev_pos.y)) + 1;
+    double dx = (pos.x - prev_pos.x) / delta;
+    double dy = (pos.y - prev_pos.y) / delta;
 
-    /*
-    if (prev_pos.x != -1 && prev_pos.y != -1) {
-        x_start = std::min(pos.x, prev_pos.x) - thickness;
-        x_end   = std::max(pos.x, pos.x) + thickness;;
+    auto x_start = prev_pos.x;
+    auto y_start = prev_pos.y;
 
-        y_start = std::min(pos.y, prev_pos.y) - thickness;
-        y_end   = std::max(pos.y, pos.y) + thickness;;
-    }
-    */
+    for (size_t i = 0; i < static_cast<size_t>(delta); ++i) {
+        x_start += dx;
+        y_start += dy;
 
-    auto color = ToolManager::get_color();
-
-    for (auto x = x_start; x < x_end; ++x) {
-        for (auto y = y_start; y < y_end; ++y) {
-            canvas.set_color(x, y, color);
+        for (auto x = x_start - thickness; x < x_start + thickness; ++x) {
+            for (auto y = y_start - thickness; y < y_start + thickness; ++y) {
+                if (0 <= x && x < size.x && 0 <= y && y < size.y) {
+                    canvas.set_color(x, y, ToolManager::get_color());
+                }
+            }
         }
     }
 
     prev_pos = pos;
+
 }
 
 //================================================================================
@@ -170,6 +167,8 @@ void ToolManager::apply(Image& canvas, const Vector2d& pos)
 
 void ToolManager::stop_applying(Image& canvas, const Vector2d& pos)
 {
-    is_applying = false;
-    active_tool->finalize(canvas, pos);
+    if (is_applying) {
+        is_applying = false;
+        active_tool->finalize(canvas, pos);
+    }
 }

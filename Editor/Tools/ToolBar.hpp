@@ -15,6 +15,8 @@ protected:
 public:
     ToolButton(const Vector2d& pos, const Vector2d& size, 
                const char* icon = nullptr, Tool* tool = nullptr);
+
+    void draw() override;
 };
 
 //================================================================================
@@ -27,4 +29,5 @@ public:
                     const Vector2d& limits, const char* icon);
 
     void drag_to(const Vector2d& pos) override;
+    void draw() override;
 };

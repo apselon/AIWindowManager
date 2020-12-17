@@ -36,6 +36,8 @@ uint8_t* Image::get_data()
 
 void Image::draw()
 {
+
+    GraphicSystem::draw_box(shape.get_pos(), shape.get_size());
     GraphicSystem::draw_bitmap(data, shape.get_pos(), shape.get_size());
 }
 
