@@ -2,6 +2,7 @@
 
 #include "../../Lib/Aux/Auxiliary.hpp"
 #include "../Canvas/Canvas.hpp"
+#include "PluginApi.hpp"
 
 class Tool {
 public:
@@ -43,6 +44,29 @@ public:
 
 //================================================================================
 
+class PluginWrapper: public Tool {
+protected:
+    PluginAPI::Plugin* plugin = nullptr;
+    void* handle = nullptr;
+public:
+    PluginWrapper(PluginAPI::Plugin* plugin, void* handle);
+
+    void init(Image& canvas, const Vector2d& pos) override;
+    void apply(Image& canvas, const Vector2d& pos) override;
+    void finalize(Image& canvas, const Vector2d& pos) override;
+};
+
+
+class PluginManager {
+protected:
+    PluginAPI::Plugin* plugin = nullptr;
+    void* hadle = nullptr;
+
+public:
+    PluginManager(const char* so_file);
+};
+
+//================================================================================
 class ToolManager {
 protected:
     static list<Tool*> tools;

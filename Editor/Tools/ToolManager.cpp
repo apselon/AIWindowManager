@@ -1,9 +1,54 @@
 #include "ToolManager.hpp"
+#include "PluginApi.hpp"
 #include <algorithm>
 
 Tool::~Tool() {}
 
-//Pencil::Pencil(const Color& color, int64_t thickness)
+//================================================================================
+
+PluginWrapper::PluginWrapper(PluginAPI::Plugin* plugin, void* handle)
+    :handle(handle), plugin(plugin)
+{
+    plugin->init();
+}
+
+void PluginWrapper::init(Image& canvas, const Vector2d& pos)
+{
+    PluginAPI::Position plug_pos = {pos.x, pos.y};
+    size_t widht = canvas.get_size().x;
+    size_t height = canvas.get_size().y;
+    
+    PluginAPI::Canvas plug_canvas = {canvas.get_data(), widht, height};
+    for (auto& p: plugin->properties) {
+        if (p.first == PluginAPI::TYPE::THICKNESS) {
+            p.second.int_value = ToolManager::get_thickness();
+        }
+    }
+
+    plugin->start_apply(plug_canvas, plug_pos);
+}
+
+void PluginWrapper::apply(Image& canvas, const Vector2d& pos)
+{
+    PluginAPI::Position plug_pos = {pos.x, pos.y};
+    size_t widht = canvas.get_size().x;
+    size_t height = canvas.get_size().y;
+    PluginAPI::Canvas plug_canvas = {canvas.get_data(), widht, height};
+
+    plugin->apply(plug_canvas, plug_pos);
+};
+
+void PluginWrapper::finalize(Image& canvas, const Vector2d& pos)
+{
+    PluginAPI::Position plug_pos = {pos.x, pos.y};
+    size_t widht = canvas.get_size().x;
+    size_t height = canvas.get_size().y;
+    PluginAPI::Canvas plug_canvas = {canvas.get_data(), widht, height};
+
+    plugin->stop_apply(plug_canvas, plug_pos);
+}
+
+//================================================================================
 
 void Pencil::init(Image& canvas, const Vector2d& pos)
 {
